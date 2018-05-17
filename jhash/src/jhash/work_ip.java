@@ -51,11 +51,7 @@ private  int [] mask;
        System.out.println( "");
 ///////////////////////////////////////////////////////////
     }
-    
-  
-   
-            
-        
+
      public void go () {
         
        found_network();
@@ -65,9 +61,7 @@ private  int [] mask;
         System.out.println("================================================================================");
         print();
      }  
-       
-     
-    
+  
      private int found_octet () //found magic octet
         {  int pos=0;
             for (int i=0; i<ip.length;i++)
@@ -111,10 +105,8 @@ private  int [] mask;
                   this.res=res;
              }
 //             else { 
-//                 System.out.println("ХНЯ  " +i);
-                   
+//                 System.out.println("ХНЯ  " +i);   
              }
-    
          }
      private int[] build_network()
      {      int res=this.res;
@@ -127,7 +119,6 @@ private  int [] mask;
              { 
                  mas[i]=res;  
              }
-        
            }
           for (int i=0;i<ip.length;i++)
           {    
@@ -172,10 +163,7 @@ private  int [] mask;
         
      return broadcast;
      }
-  
-                
-   
-     
+ 
      public void print ()    
      {    
          int[] network=new int [4];
@@ -186,7 +174,6 @@ private  int [] mask;
           long endTime;
           long countIP=0;
         // startTime=System.nanoTime();
-           
                 if (pos==3)
                  { 
                      startTime=System.nanoTime();
