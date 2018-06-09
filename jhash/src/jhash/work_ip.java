@@ -2,10 +2,6 @@ package jhash;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- *
- * @author vladimir
- */
 public class work_ip {
          
 private  int [] ip;
