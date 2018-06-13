@@ -7,13 +7,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="387.0" prefWidth="613.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="jhash.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="387.0" prefWidth="613.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jhash.FXMLDocumentController">
     <children>
         <Button fx:id="button" layoutX="418.0" layoutY="324.0" onAction="#handleButtonAction" text="Расчитать" />
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-      <TextField layoutX="102.0" layoutY="74.0" prefHeight="25.0" prefWidth="205.0" promptText="192.168.0.0" />
-      <TextField layoutX="307.0" layoutY="74.0" prefHeight="25.0" prefWidth="62.0" promptText="24" />
-      <TextArea layoutX="14.0" layoutY="107.0" prefHeight="200.0" prefWidth="591.0" />
-      <TextField alignment="TOP_CENTER" editable="false" layoutX="102.0" layoutY="49.0" prefHeight="25.0" prefWidth="267.0" text="Введите подсеть и маску.." />
+        <TextField fx:id="SUBNET" layoutX="102.0" layoutY="74.0" prefHeight="25.0" prefWidth="205.0" promptText="192.168.0.0" />
+        <TextField fx:id="MASK" layoutX="307.0" layoutY="74.0" prefHeight="25.0" prefWidth="62.0" promptText="24" />
+        <TextArea layoutX="14.0" layoutY="107.0" prefHeight="200.0" prefWidth="591.0" />
+        <TextField alignment="TOP_CENTER" editable="false" layoutX="102.0" layoutY="49.0" prefHeight="25.0" prefWidth="267.0" text="Введите подсеть и маску.." />
     </children>
 </AnchorPane>
