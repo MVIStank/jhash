@@ -6,10 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- *
- * @author millenium
- */
+
 public class Jhash extends Application {
     
     @Override
@@ -22,9 +19,6 @@ public class Jhash extends Application {
         stage.show();
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
         work_ip tmp=new work_ip ();
