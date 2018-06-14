@@ -21,8 +21,9 @@ public class Jhash extends Application {
 
     public static void main(String[] args) {
         launch(args);
-        work_ip tmp=new work_ip ();
-        tmp.go();
+       
+       //work_ip tmp=new work_ip ();
+       //tmp.go();
     }
     
 }

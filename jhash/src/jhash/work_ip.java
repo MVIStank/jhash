@@ -4,8 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 public class work_ip {
          
-private  int [] ip;
-private  int [] mask;
+public int [] ip;
+public int [] mask;
 
 
   
@@ -22,15 +22,153 @@ private  int [] mask;
          
      //int [] ip ={192,168,20,20};
      //int [] mask={255,252,0,0};
-           set_ip();     
+        //   set_ip();     
     }
-            
-    public void set_ip()
+    public void set_mask(int mask_int){
+       
+        switch(mask_int){
+            case 0: 
+                     int []mask1 = {255,255,255,0};
+                     this.mask=mask1;
+                     break;
+            case 1: 
+                     int []mask2 = {128,0,0,0};
+                     this.mask=mask2;
+                     break;
+            case 2: 
+                     int []mask3 = {192,0,0,0};
+                     this.mask=mask3;
+                     break; 
+            case 3: 
+                     int []mask4 = {224,0,0,0};
+                     this.mask=mask4;
+                     break; 
+            case 4: 
+                    int []mask5 = {240,0,0,0};
+                    this.mask=mask5;
+                    break;  
+            case 5: 
+                    int []mask6 = {248,0,0,0};
+                    this.mask=mask6;
+                    break;  
+            case 6: 
+                    int []mask7 = {252,0,0,0};
+                    this.mask=mask7;
+                    break;  
+            case 7: 
+                    int []mask8 = {254,0,0,0};
+                    this.mask=mask8;
+                    break;  
+            case 8: 
+                    int []mask9 = {255,0,0,0};
+                    this.mask=mask9;
+                    break;
+            case 9: 
+                    int []mask10 = {255,128,0,0};
+                    this.mask=mask10;
+                    break;
+            case 10: 
+                    int []mask11 = {255,192,0,0};
+                    this.mask=mask11;
+                    break;
+            case 11: 
+                    int []mask12 = {255,224,0,0};
+                    this.mask=mask12;
+                    break;
+            case 12: 
+                    int []mask13 = {255,240,0,0};
+                    this.mask=mask13;
+                    break;        
+            case 13: 
+                    int []mask14 = {255,248,0,0};
+                    this.mask=mask14;
+                    break;
+            case 14: 
+                    int []mask15 = {255,252,0,0};
+                    this.mask=mask15;
+                    break;
+            case 15: 
+                    int []mask16 = {255,254,0,0};
+                    this.mask=mask16;
+                    break;
+            case 16: 
+                    int []mask17 = {255,255,0,0};
+                    this.mask=mask17;
+                    break;
+            case 17: 
+                    int []mask18 = {255,255,128,0};
+                    this.mask=mask18;
+                    break;
+            case 18: 
+                    int []mask19 = {255,255,192,0};
+                    this.mask=mask19;
+                    break;
+             case 19: 
+                    int []mask20 = {255,255,224,0};
+                    this.mask=mask20;
+                    break;
+             case 20: 
+                    int []mask21 = {255,255,240,0};
+                    this.mask=mask21;
+                    break;
+             case 21: 
+                    int []mask22 = {255,255,248,0};
+                    this.mask=mask22;
+                    break;
+             case 22: 
+                    int []mask23 = {255,255,252,0};
+                    this.mask=mask23;
+                    break;
+            case 23: 
+                    int []mask24 = {255,255,254,0};
+                    this.mask=mask24;
+                    break;
+            case 24: 
+                    int []mask25 = {255,255,255,0};
+                    this.mask=mask25;
+                    break;
+            case 25: 
+                    int []mask26 = {255,255,255,128};
+                    this.mask=mask26;
+                    break;
+            case 26: 
+                    int []mask27 = {255,255,255,192};
+                    this.mask=mask27;
+                    break;
+            case 27: 
+                    int []mask28 = {255,255,255,224};
+                    this.mask=mask28;
+                    break;
+            case 28: 
+                    int []mask29 = {255,255,255,240};
+                    this.mask=mask29;
+                    break;
+            case 29: 
+                    int []mask30 = {255,255,255,248};
+                    this.mask=mask30;
+                    break;
+            case 30: 
+                    int []mask31 = {255,255,255,252};
+                    this.mask=mask31;
+                    break;
+            case 31: 
+                    int []mask32 = {255,255,255,254};
+                    this.mask=mask32;
+                    break;
+            case 32: 
+                    int []mask33 = {255,255,255,255};
+                    this.mask=mask33;
+                    break;  
+                          
+        }
+    
+    }
+    public void set_ip( int []  subnet_network)
     {
-       int[] ip1 = {15,190,7,7};
-        int []mask1 = {255,255,255,0};
-        this.ip=ip1;
-        this.mask=mask1;
+       //int[] ip1 = {15,190,7,7};
+        //int []mask1 = {255,255,255,0};
+       this.ip=subnet_network;
+       // this.mask=mask1;
 ////////////////////Temp////////////////////////////////// 
         System.out.print("Подсеть: ");
         for(int i=0;i<ip.length;i++)
