@@ -1,8 +1,7 @@
 //Добавить проверку подсети и маски на наличие букв
 package jhash;
 
-//import jhash.Jhash;
-//import jhash.work_ip;
+import java.util.Arrays;
 import javafx.scene.control.Alert;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 
 
 public class FXMLDocumentController implements Initializable {
@@ -25,6 +25,14 @@ public class FXMLDocumentController implements Initializable {
     private TextField SUBNET;
      @FXML
     private TextField MASK;
+     @FXML
+    private TextField NetField;
+     @FXML
+    private TextField BroadcastField;
+     @FXML
+    private TextField MaskField;
+     @FXML
+    private TextArea IpOutputField;
  ////
     work_ip tmp=new work_ip ();   
  
@@ -34,7 +42,10 @@ public class FXMLDocumentController implements Initializable {
         label.setText("Hello World!");   
         check_mask();
         check_subnet();
-      //  tmp.go();
+        NetField.setText(Arrays.toString(tmp.build_network()));
+        BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
+        //MaskField.setText(System.out.toString()
+                
     }
     
     @Override
@@ -95,26 +106,26 @@ public class FXMLDocumentController implements Initializable {
                         subnet_network[i]=Integer.parseInt(str[i]);
                     }
                     for (int i=0; i<=3;i++) 
-                    {
+                     {
                       if (subnet_network[i] < 0 || subnet_network[i] > 255)
-                      {
+                       {
                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
                        alert.setTitle("Ошибка");
                        alert.setHeaderText(null);
                        alert.setContentText(" Октет должен быть в диапозоне от 0 до 255 ");
                        alert.showAndWait();
-                      }     
-                    }
+                       }     
+                     }
                }
-             else
-           {
+                 else
+                 {
               Alert alert = new Alert(Alert.AlertType.INFORMATION);
                        alert.setTitle("Ошибка");
                        alert.setHeaderText(null);
                        alert.setContentText(" Подсеть задана не верно! ");
                        alert.showAndWait();
-           }
-          } //end else
+                  }
+           } //end else
           tmp.set_ip(subnet_network);
      }//end function
       

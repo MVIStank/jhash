@@ -6,12 +6,12 @@ public class work_ip {
          
 public int [] ip;
 public int [] mask;
+public String outtmp;
 
-
-  
- private int res; // subnet network
- private int pos;
-    public work_ip()
+private int res; // subnet network
+private int pos;
+    
+public work_ip()
     {
       //  int [] ip1 =this.ip;
       //  int [] mask1 =this.ip;
@@ -24,12 +24,11 @@ public int [] mask;
      //int [] mask={255,252,0,0};
         //   set_ip();     
     }
-    public void set_mask(int mask_int){
-       
+    public void set_mask(int mask_int){   
         switch(mask_int){
             case 0: 
                      int []mask1 = {255,255,255,0};
-                     this.mask=mask1;
+                     this.mask=mask1;                    
                      break;
             case 1: 
                      int []mask2 = {128,0,0,0};
@@ -242,9 +241,11 @@ public int [] mask;
 //                 System.out.println("ХНЯ  " +i);   
              }
          }
-     private int[] build_network()
-     {      int res=this.res;
-            int pos=this.pos;
+     public int[] build_network()
+     {   
+         found_network();
+         int res=this.res;
+         int pos=this.pos;
          int []mas =new int [4];
           for(int i=0;i<ip.length;i++)
           {
@@ -269,7 +270,7 @@ public int [] mask;
      return mas;
      }
     
-     private int[] build_broadcast ()
+     public int[] build_broadcast ()
      {   int magic_number;
          int[] network=new int [4];
          int [] broadcast =new int [4];
@@ -298,7 +299,7 @@ public int [] mask;
      return broadcast;
      }
  
-     public void print ()    
+     public int print ()    
      {    
          int[] network=new int [4];
          int [] broadcast =new int [4];  
@@ -389,5 +390,5 @@ public int [] mask;
                     System.out.println("Время выполнения: " +(TimeUnit.SECONDS.convert(endTime, TimeUnit.NANOSECONDS))+" сек");  
                     System.out.println("Количество IP адресов: " +countIP);
                  }//pos=1
-     }// end pint()
+             return 0;}// end pint()
 }//class
