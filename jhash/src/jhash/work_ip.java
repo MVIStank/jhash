@@ -6,23 +6,16 @@ public class work_ip {
          
 public int [] ip;
 public int [] mask;
-public String outtmp;
 
 private int res; // subnet network
 private int pos;
     
 public work_ip()
     {
-      //  int [] ip1 =this.ip;
-      //  int [] mask1 =this.ip;
           int [] ip=new int[4];
           int [] mask= new int[4];
            this.ip=ip;
-           this.mask=mask;
-         
-     //int [] ip ={192,168,20,20};
-     //int [] mask={255,252,0,0};
-        //   set_ip();     
+           this.mask=mask;    
     }
     public void set_mask(int mask_int){   
         switch(mask_int){
@@ -157,45 +150,16 @@ public work_ip()
             case 32: 
                     int []mask33 = {255,255,255,255};
                     this.mask=mask33;
-                    break;  
-                          
+                    break;               
         }
-    
     }
+    
     public void set_ip( int []  subnet_network)
     {
-       //int[] ip1 = {15,190,7,7};
-        //int []mask1 = {255,255,255,0};
        this.ip=subnet_network;
-       // this.mask=mask1;
-////////////////////Temp////////////////////////////////// 
-        System.out.print("Подсеть: ");
-        for(int i=0;i<ip.length;i++)
-        {
-            System.out.print(ip[i]+".");
-        }
-       System.out.println( "");
-       
-       System.out.print("Маска: ");
-        for(int i=0;i<ip.length;i++)
-        {
-            System.out.print(mask[i]+".");
-        }
-       System.out.println( "");
-///////////////////////////////////////////////////////////
     }
-
-     public void go () {
-        
-       found_network();
-        build_network();
-        build_broadcast();
-     System.out.println("") ;  
-        System.out.println("================================================================================");
-        print();
-     }  
-  
-     private int found_octet () //found magic octet
+ 
+    private int found_octet () //found magic octet
         {  int pos=0;
             for (int i=0; i<ip.length;i++)
          {
@@ -206,7 +170,6 @@ public work_ip()
               break;
              } 
          }
-         // System.out.println("октет" + pos); 
          return pos;
         }//fucntion
      
@@ -214,7 +177,6 @@ public work_ip()
      {   
          int y=found_octet();
          y=256-mask[y];
-         // System.out.println("магическое число" + y); 
          return y;
      }
      
@@ -223,24 +185,16 @@ public work_ip()
          int ips=magic_number();
          int masks=found_octet ();
          int res=0;
-         System.out.println("шаг "+ips);
-           System.out.println("октет "+masks);
          for (int i=0;i<=ip[masks];i=i+ips)
          {   
-//             if(ip[masks]==0)
-//             {
-//             System.out.println("Результат  " +i);
-//             }
               if (i+ips>ip[masks])
              {
-                 System.out.println("Результат  " +res);
                   res=i;
                   this.res=res;
              }
-//             else { 
-//                 System.out.println("ХНЯ  " +i);   
-             }
+
          }
+     }
      public int[] build_network()
      {   
          found_network();
@@ -260,13 +214,6 @@ public work_ip()
               if (i>pos)
               {mas[i]=0;}
           }
-     System.out.print("Network: ");
-    
-     for(int i=0;i<ip.length;i++)
-       {
-            System.out.print(mas[i]+".");
-       }
-      System.out.println(" ");
      return mas;
      }
     
@@ -277,25 +224,20 @@ public work_ip()
          network=build_network();
          for (int i=0;i<mask.length;i++)
          {
-           if (mask[i]==255){
+           if (mask[i]==255)
+           {
                broadcast[i]=ip[i];
-           }else  if
-                   (mask[i]==0){
-             broadcast[i]=255; 
-         }
-         else 
-          { 
-             broadcast[i]= (256-mask[i])+(network[pos])-1;
-         }//else
-         
+           }
+           else 
+               if  (mask[i]==0)
+                {
+                  broadcast[i]=255; 
+                }
+                 else 
+                 { 
+                   broadcast[i]= (256-mask[i])+(network[pos])-1;
+                 }//else
          }//for
-         System.out.print("Broadcast: ");
-    
-     for(int i=0;i<broadcast.length;i++)
-       {
-            System.out.print(broadcast[i]+".");
-       }
-        
      return broadcast;
      }
  
@@ -305,27 +247,29 @@ public work_ip()
          int [] broadcast =new int [4];  
          network=build_network();
          broadcast=build_broadcast();
-          long startTime;
-          long endTime;
+          long startTime=0;
+          long endTime=0;
           long countIP=0;
+          double seconds=0;
         // startTime=System.nanoTime();
                 if (pos==3)
                  { 
                      startTime=System.nanoTime();
-                     for (int i=0;i<255;i++)
+                     for (int i=0;i<=255;i++)
                        {
                            System.out.println(network[0]+"."+network[1]+"."+network[2]+"."+i);
                            countIP++;
                        }
                           endTime=System.nanoTime()-startTime;
-                          System.out.println("Время выполнения: " +(TimeUnit.SECONDS.convert(endTime, TimeUnit.NANOSECONDS))+" сек");
-                          System.out.println("Количество IP адресов: " +countIP);
+                          seconds = (double)endTime / 1000000000.0;
+                          System.out.println("Time: " +seconds +" sec");
+                          System.out.println("Count IP: " +countIP);
                  }//pos=3
                 if (pos==2)
                  {   
                     int beg=network[pos];
                     startTime=System.nanoTime();
-                      while(beg!=broadcast[2]) 
+                      while(beg<=broadcast[2]) 
                          {   
                             for(int j=0;j<=255;j++)
                               {
@@ -335,8 +279,9 @@ public work_ip()
                                  beg ++;
                          }
                       endTime=System.nanoTime()-startTime;
-                      System.out.println("Время выполнения: " +(TimeUnit.SECONDS.convert(endTime, TimeUnit.NANOSECONDS))+" сек");
-                      System.out.println("Количество IP адресов: " +countIP);
+                      seconds = (double)endTime / 1000000000.0;
+                      System.out.println("Time: " +seconds +" sec");
+                      System.out.println("Count IP: " +countIP);
                  }//pos=2
                 if(pos==1)
                  {
@@ -358,8 +303,9 @@ public work_ip()
                       beg2=0;
                      }
                      endTime=System.nanoTime()-startTime;
-                     System.out.println("Время выполнения: " +(TimeUnit.SECONDS.convert(endTime, TimeUnit.NANOSECONDS))+" сек");
-                     System.out.println("Количество IP адресов: " +countIP);
+                     seconds = (double)endTime / 1000000000.0;
+                     System.out.println("Time: " +seconds +" sec");
+                     System.out.println("Count IP: " +countIP);
                  }//pos=1
                 if(pos==0)
                  {  int beg0=network[pos];
@@ -387,8 +333,10 @@ public work_ip()
                         beg2=0;
                        }
                     endTime=System.nanoTime()-startTime;
-                    System.out.println("Время выполнения: " +(TimeUnit.SECONDS.convert(endTime, TimeUnit.NANOSECONDS))+" сек");  
-                    System.out.println("Количество IP адресов: " +countIP);
+                    seconds = (double)endTime / 1000000000.0;
+                    System.out.println("Time: " +seconds +" sec"); 
+                    System.out.println("Count IP: " +countIP);
                  }//pos=1
-             return 0;}// end pint()
+           return 1;
+                   }// end print()
 }//class

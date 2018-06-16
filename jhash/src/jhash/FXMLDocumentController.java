@@ -1,6 +1,9 @@
 //Добавить проверку подсети и маски на наличие букв
 package jhash;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 import javafx.scene.control.Alert;
 import java.net.URL;
@@ -12,6 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.CheckBox;
+import javafx.application.Platform;
+import javafx.scene.control.ProgressIndicator;
 
 
 public class FXMLDocumentController implements Initializable {
@@ -33,26 +39,51 @@ public class FXMLDocumentController implements Initializable {
     private TextField MaskField;
      @FXML
     private TextArea IpOutputField;
+     @FXML 
+    private CheckBox CheckBox;
+     @FXML
+    private ProgressIndicator ProgressIndicator;
  ////
     work_ip tmp=new work_ip ();   
+    public void appendText(String str) {
+    Platform.runLater(() -> IpOutputField.appendText(str));
+}
  
      @FXML
     private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");   
+      //  System.out.println("You clicked me!");
+       // label.setText("Hello World!"); 
+        IpOutputField.clear();
         check_mask();
         check_subnet();
         NetField.setText(Arrays.toString(tmp.build_network()));
+        MaskField.setText(Arrays.toString(tmp.mask));
         BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
-        //MaskField.setText(System.out.toString()
-                
+        if(CheckBox.isSelected())     
+        {  
+           //  Platform.runLater(() -> got());
+           tmp.print();
+        }
+            
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }  
+        
+        OutputStream out = new OutputStream() {
+        @Override
+        public void write(int b) throws IOException {
+            appendText(String.valueOf((char) b));
+        }
+    };
+    System.setOut(new PrintStream(out, true));
+}
       
+
+       
+       
+     
     private void check_mask(){
         String mask=MASK.getText();
          if(mask== null || mask.length() == 0)
@@ -80,6 +111,8 @@ public class FXMLDocumentController implements Initializable {
      private void check_subnet(){
          String subnet=SUBNET.getText();
          String [] str;
+          char a =',';
+          char b= '.';
          int [] subnet_network=new int[4];
           if( subnet.length() == 0)
            {
@@ -90,7 +123,10 @@ public class FXMLDocumentController implements Initializable {
               alert.showAndWait();   
            }
            else
-           {    if(subnet.contains("."))
+           {   subnet=subnet.replace(a, b);
+               
+               SUBNET.setText(subnet);
+               if(subnet.contains("."))
                {
                 str = subnet.split("[.]"); 
                 if(str.length<=3)
@@ -129,12 +165,5 @@ public class FXMLDocumentController implements Initializable {
           tmp.set_ip(subnet_network);
      }//end function
       
-   
-
-
 }
-
-
-
-    
 

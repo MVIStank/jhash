@@ -17,13 +17,17 @@
         <TextArea fx:id="IpOutputField" editable="false" layoutX="3.0" layoutY="209.0" prefHeight="212.0" prefWidth="591.0" />
         <TextField alignment="TOP_CENTER" editable="false" layoutX="6.0" layoutY="26.0" prefHeight="25.0" prefWidth="267.0" text="Введите подсеть и маску.." />
       <Accordion />
-      <CheckBox layoutX="12.0" layoutY="435.0" mnemonicParsing="false" text="Показать диапозон адресов" />
+      <CheckBox fx:id="CheckBox" layoutX="12.0" layoutY="435.0" mnemonicParsing="false" text="Показать ip адреса">
+         <tooltip>
+            <Tooltip text="Данная операция может занять много времени" />
+         </tooltip></CheckBox>
       <TextField alignment="TOP_CENTER" editable="false" layoutX="5.0" layoutY="141.0" prefHeight="25.0" prefWidth="88.0" text="Mask" />
       <TextField alignment="TOP_CENTER" editable="false" layoutX="6.0" layoutY="178.0" prefHeight="25.0" prefWidth="88.0" text="Broadcast" />
       <Separator layoutX="6.0" layoutY="90.0" prefHeight="16.0" prefWidth="591.0" />
-      <TextField fx:id="MaskField" editable="false" layoutX="95.0" layoutY="140.0" prefHeight="25.0" prefWidth="171.0" />
-      <TextField fx:id="BroadcastField" editable="false" layoutX="96.0" layoutY="179.0" prefHeight="25.0" prefWidth="171.0" />
+      <TextField fx:id="MaskField" layoutX="95.0" layoutY="140.0" prefHeight="25.0" prefWidth="171.0" />
+      <TextField fx:id="BroadcastField" layoutX="96.0" layoutY="179.0" prefHeight="25.0" prefWidth="171.0" />
       <TextField alignment="TOP_CENTER" editable="false" layoutX="5.0" layoutY="106.0" prefHeight="25.0" prefWidth="88.0" text="Network" />
-      <TextField fx:id="NetField" layoutX="96.0" layoutY="106.0" prefHeight="25.0" prefWidth="171.0" />
+      <TextField fx:id="NetField" editable="false" layoutX="96.0" layoutY="106.0" prefHeight="25.0" prefWidth="171.0" />
+      <ProgressIndicator fx:id="ProgressIndicator" layoutX="270.0" layoutY="289.0" progress="0.0" visible="false" />
     </children>
 </AnchorPane>
