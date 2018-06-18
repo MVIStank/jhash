@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.CheckBox;
 import javafx.application.Platform;
-import javafx.scene.control.ProgressIndicator;
 
 
 public class FXMLDocumentController implements Initializable {
@@ -41,18 +40,15 @@ public class FXMLDocumentController implements Initializable {
     private TextArea IpOutputField;
      @FXML 
     private CheckBox CheckBox;
-     @FXML
-    private ProgressIndicator ProgressIndicator;
+     @FXML  
  ////
-    work_ip tmp=new work_ip ();   
+       work_ip tmp=new work_ip ();
     public void appendText(String str) {
     Platform.runLater(() -> IpOutputField.appendText(str));
 }
- 
+    
      @FXML
     private void handleButtonAction(ActionEvent event) {
-      //  System.out.println("You clicked me!");
-       // label.setText("Hello World!"); 
         IpOutputField.clear();
         check_mask();
         check_subnet();
@@ -61,16 +57,14 @@ public class FXMLDocumentController implements Initializable {
         BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
         if(CheckBox.isSelected())     
         {  
-           //  Platform.runLater(() -> got());
-           tmp.print();
-        }
-            
+          tmp.print();
+        }     
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        
+       
         OutputStream out = new OutputStream() {
         @Override
         public void write(int b) throws IOException {
@@ -79,11 +73,12 @@ public class FXMLDocumentController implements Initializable {
     };
     System.setOut(new PrintStream(out, true));
 }
-      
-
-       
-       
-     
+            
+        
+        
+        
+        
+    
     private void check_mask(){
         String mask=MASK.getText();
          if(mask== null || mask.length() == 0)
@@ -164,6 +159,7 @@ public class FXMLDocumentController implements Initializable {
            } //end else
           tmp.set_ip(subnet_network);
      }//end function
-      
+    
+    
 }
 

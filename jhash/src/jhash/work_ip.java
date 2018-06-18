@@ -6,6 +6,8 @@ public class work_ip {
          
 public int [] ip;
 public int [] mask;
+public int task_worker;
+public boolean task_worker_status=true;
 
 private int res; // subnet network
 private int pos;
@@ -241,7 +243,7 @@ public work_ip()
      return broadcast;
      }
  
-     public int print ()    
+     public void print ()    
      {    
          int[] network=new int [4];
          int [] broadcast =new int [4];  
@@ -258,12 +260,23 @@ public work_ip()
                      for (int i=0;i<=255;i++)
                        {
                            System.out.println(network[0]+"."+network[1]+"."+network[2]+"."+i);
+                           if (countIP==125)
+                            {
+                                this.task_worker=50;
+                            }
+                           if (countIP==250)
+                            {   
+                                this.task_worker=100;
+                                 task_worker_status=false;
+                            }
                            countIP++;
+                            
                        }
                           endTime=System.nanoTime()-startTime;
                           seconds = (double)endTime / 1000000000.0;
                           System.out.println("Time: " +seconds +" sec");
                           System.out.println("Count IP: " +countIP);
+                         
                  }//pos=3
                 if (pos==2)
                  {   
@@ -274,14 +287,23 @@ public work_ip()
                             for(int j=0;j<=255;j++)
                               {
                                  System.out.println(network[0]+"."+network[1]+"."+beg+"."+j);
+                                  if (countIP==125)
+                                     {
+                                        this.task_worker=50;
+                                     }
                                  countIP++;
                               }
                                  beg ++;
+                                 if (beg==broadcast[2])
+                                     {
+                                        this.task_worker=100;
+                                     }
                          }
                       endTime=System.nanoTime()-startTime;
                       seconds = (double)endTime / 1000000000.0;
                       System.out.println("Time: " +seconds +" sec");
                       System.out.println("Count IP: " +countIP);
+                      task_worker_status=false;
                  }//pos=2
                 if(pos==1)
                  {
@@ -336,7 +358,7 @@ public work_ip()
                     seconds = (double)endTime / 1000000000.0;
                     System.out.println("Time: " +seconds +" sec"); 
                     System.out.println("Count IP: " +countIP);
+                    task_worker_status=false;   
                  }//pos=1
-           return 1;
                    }// end print()
 }//class
