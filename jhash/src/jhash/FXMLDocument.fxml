@@ -27,5 +27,7 @@
       <TextField fx:id="BroadcastField" layoutX="96.0" layoutY="179.0" prefHeight="25.0" prefWidth="171.0" />
       <TextField alignment="TOP_CENTER" editable="false" layoutX="5.0" layoutY="106.0" prefHeight="25.0" prefWidth="88.0" text="Network" />
       <TextField fx:id="NetField" editable="false" layoutX="96.0" layoutY="106.0" prefHeight="25.0" prefWidth="171.0" />
+      <ProgressBar fx:id="progressbar" layoutX="182.0" layoutY="305.0" prefWidth="200.0" progress="0.0" visible="false" />
+      <TextField fx:id="test" layoutX="22.0" layoutY="467.0" />
     </children>
 </AnchorPane>

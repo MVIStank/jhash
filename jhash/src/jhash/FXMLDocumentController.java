@@ -17,6 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.CheckBox;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.scene.control.ProgressBar;
 
 
 public class FXMLDocumentController implements Initializable {
@@ -40,12 +42,46 @@ public class FXMLDocumentController implements Initializable {
     private TextArea IpOutputField;
      @FXML 
     private CheckBox CheckBox;
-     @FXML  
+     @FXML 
+    private ProgressBar progressbar;
+     @FXML 
+    private TextField test;
+    
+
+      Task copyWorker;
+    
  ////
        work_ip tmp=new work_ip ();
     public void appendText(String str) {
     Platform.runLater(() -> IpOutputField.appendText(str));
 }
+    
+  public Task createWorker() {
+    return new Task() {
+      @Override
+      protected Object call() throws Exception {
+           updateProgress(0.5, 1);   
+         // while(tmp.task_worker_status){
+           //  updateProgress(0.5, 1);    
+          Thread.sleep(2000);
+         tmp.print();
+        //}
+           updateProgress(0.7, 1);
+          // Thread.sleep(2000);
+            updateProgress(1, 1);
+         // Thread.sleep(5000);
+            //progressbar.setProgress(0);
+            progressbar.setVisible(false);
+            button.setDisable(false);
+             progressbar.progressProperty().unbind();
+             
+          
+        return true;
+       
+      }
+    };
+  }
+
     
      @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -56,9 +92,18 @@ public class FXMLDocumentController implements Initializable {
         MaskField.setText(Arrays.toString(tmp.mask));
         BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
         if(CheckBox.isSelected())     
-        {  
-          tmp.print();
-        }     
+        {   
+            button.setDisable(true);
+            progressbar.setVisible(true);
+            progressbar.setProgress(0);
+             copyWorker = createWorker();
+        progressbar.progressProperty().unbind();
+        progressbar.progressProperty().bind(copyWorker.progressProperty());
+            new Thread(copyWorker).start();
+         
+          
+         //  tmp.print();
+        }
     }
     
     @Override
@@ -73,12 +118,7 @@ public class FXMLDocumentController implements Initializable {
     };
     System.setOut(new PrintStream(out, true));
 }
-            
-        
-        
-        
-        
-    
+ 
     private void check_mask(){
         String mask=MASK.getText();
          if(mask== null || mask.length() == 0)
