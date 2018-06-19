@@ -1,5 +1,8 @@
 package jhash;
 
+
+
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 public class work_ip {
@@ -8,7 +11,7 @@ public int [] ip;
 public int [] mask;
 public int task_worker;
 public boolean task_worker_status=true;
-
+TreeMap<Integer, String> treemap = new TreeMap<Integer, String>();
 private int res; // subnet network
 private int pos;
     
@@ -253,13 +256,17 @@ public work_ip()
           long endTime=0;
           long countIP=0;
           double seconds=0;
+          String Str;
         // startTime=System.nanoTime();
                 if (pos==3)
                  { 
                      startTime=System.nanoTime();
                      for (int i=0;i<=255;i++)
-                       {
-                           System.out.println(network[0]+"."+network[1]+"."+network[2]+"."+i);
+                       {   
+                          // System.out.println(network[0]+"."+network[1]+"."+network[2]+"."+i);
+                           Str=network[0]+"."+network[1]+"."+network[2]+"."+i;
+                           
+                           treemap.put(i, Str);
                            if (countIP==125)
                             {
                                 this.task_worker=50;
@@ -274,8 +281,8 @@ public work_ip()
                        }
                           endTime=System.nanoTime()-startTime;
                           seconds = (double)endTime / 1000000000.0;
-                          System.out.println("Time: " +seconds +" sec");
-                          System.out.println("Count IP: " +countIP);
+                          //System.out.println("Time: " +seconds +" sec");
+                         // System.out.println("Count IP: " +countIP);
                          
                  }//pos=3
                 if (pos==2)

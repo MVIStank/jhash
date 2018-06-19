@@ -7,7 +7,12 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import javafx.scene.control.Alert;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
+
 import java.util.ResourceBundle;
+import java.util.Set;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -46,15 +51,13 @@ public class FXMLDocumentController implements Initializable {
     private ProgressBar progressbar;
      @FXML 
     private TextField test;
-    
-
+     
       Task copyWorker;
-    
- ////
+
        work_ip tmp=new work_ip ();
-    public void appendText(String str) {
-    Platform.runLater(() -> IpOutputField.appendText(str));
-}
+  //  public void appendText(String str) {
+  //  Platform.runLater(() -> IpOutputField.appendText(str));
+//}
     
   public Task createWorker() {
     return new Task() {
@@ -65,8 +68,13 @@ public class FXMLDocumentController implements Initializable {
            //  updateProgress(0.5, 1);    
           Thread.sleep(2000);
          tmp.print();
-        //}
-           updateProgress(0.7, 1);
+          // System.out.println();
+         Set<Integer> keys = tmp.treemap.keySet();
+        for(Integer key: keys){
+          // System.out.println("Value of "+key+" is: "+tmp.treemap.get(key));
+              Platform.runLater(() ->  IpOutputField.appendText(tmp.treemap.get(key)));
+              Platform.runLater(() ->  IpOutputField.appendText("\n"));
+          }
           // Thread.sleep(2000);
             updateProgress(1, 1);
          // Thread.sleep(5000);
@@ -74,11 +82,10 @@ public class FXMLDocumentController implements Initializable {
             progressbar.setVisible(false);
             button.setDisable(false);
              progressbar.progressProperty().unbind();
-             
-          
-        return true;
+      
        
-      }
+            return true;
+}
     };
   }
 
@@ -98,6 +105,7 @@ public class FXMLDocumentController implements Initializable {
             progressbar.setProgress(0);
              copyWorker = createWorker();
         progressbar.progressProperty().unbind();
+        
         progressbar.progressProperty().bind(copyWorker.progressProperty());
             new Thread(copyWorker).start();
          
@@ -110,13 +118,13 @@ public class FXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
        
-        OutputStream out = new OutputStream() {
-        @Override
-        public void write(int b) throws IOException {
-            appendText(String.valueOf((char) b));
-        }
-    };
-    System.setOut(new PrintStream(out, true));
+     //   OutputStream out = new OutputStream() {
+      //  @Override
+      //  public void write(int b) throws IOException {
+      //      appendText(String.valueOf((char) b));
+      //  }
+  //  };
+ //   System.setOut(new PrintStream(out, true));
 }
  
     private void check_mask(){
