@@ -1,12 +1,10 @@
 package jhash;
 
-
-
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
-public class work_ip {
-         
+public class work_ip 
+{    
 public int [] ip;
 public int [] mask;
 public int task_worker;
@@ -14,16 +12,19 @@ public boolean task_worker_status=true;
 TreeMap<Integer, String> treemap = new TreeMap<Integer, String>();
 private int res; // subnet network
 private int pos;
+
     
 public work_ip()
-    {
+ {
           int [] ip=new int[4];
           int [] mask= new int[4];
            this.ip=ip;
            this.mask=mask;    
-    }
-    public void set_mask(int mask_int){   
-        switch(mask_int){
+ }
+public void set_mask(int mask_int)
+ {   
+        switch(mask_int)
+        {
             case 0: 
                      int []mask1 = {255,255,255,0};
                      this.mask=mask1;                    
@@ -159,12 +160,12 @@ public work_ip()
         }
     }
     
-    public void set_ip( int []  subnet_network)
+public void set_ip( int []  subnet_network)
     {
        this.ip=subnet_network;
     }
  
-    private int found_octet () //found magic octet
+private int found_octet () //found magic octet
         {  int pos=0;
             for (int i=0; i<ip.length;i++)
          {
@@ -178,14 +179,14 @@ public work_ip()
          return pos;
         }//fucntion
      
-     private int magic_number() 
+private int magic_number() 
      {   
          int y=found_octet();
          y=256-mask[y];
          return y;
      }
      
-     private void found_network()
+private void found_network()
      {   
          int ips=magic_number();
          int masks=found_octet ();
@@ -200,7 +201,7 @@ public work_ip()
 
          }
      }
-     public int[] build_network()
+public int[] build_network()
      {   
          found_network();
          int res=this.res;
@@ -222,7 +223,7 @@ public work_ip()
      return mas;
      }
     
-     public int[] build_broadcast ()
+public int[] build_broadcast ()
      {   int magic_number;
          int[] network=new int [4];
          int [] broadcast =new int [4];
@@ -246,7 +247,7 @@ public work_ip()
      return broadcast;
      }
  
-     public void print ()    
+public void print ()    
      {    
          int[] network=new int [4];
          int [] broadcast =new int [4];  
@@ -262,11 +263,10 @@ public work_ip()
                 if (pos==3)
                  { 
                      startTime=System.nanoTime();
-                     for (int i=0;i<=255;i++)
+                     for (int i=network[pos];i<=broadcast[pos];i++)
                        {   
                           // System.out.println(network[0]+"."+network[1]+"."+network[2]+"."+i);
                            Str=network[0]+"."+network[1]+"."+network[2]+"."+i;
-                           
                            treemap.put(i, Str);
                            if (countIP==125)
                             {
@@ -278,13 +278,11 @@ public work_ip()
                                  task_worker_status=false;
                             }
                            countIP++;
-                            
                        }
                           endTime=System.nanoTime()-startTime;
                           seconds = (double)endTime / 1000000000.0;
                           //System.out.println("Time: " +seconds +" sec");
                          // System.out.println("Count IP: " +countIP);
-                         
                  }//pos=3
                 if (pos==2)
                  {   

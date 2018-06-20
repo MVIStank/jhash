@@ -1,18 +1,11 @@
 //Добавить проверку подсети и маски на наличие букв
 package jhash;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.Arrays;
 import javafx.scene.control.Alert;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Map;
-
 import java.util.ResourceBundle;
 import java.util.Set;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -53,10 +46,10 @@ public class FXMLDocumentController implements Initializable {
     private ProgressBar progressbar;
      @FXML 
     private TextField test;
-     
-      Task copyWorker;
 
-       work_ip tmp=new work_ip ();
+    Task copyWorker;
+
+  work_ip tmp=new work_ip ();
   //  public void appendText(String str) {
   //  Platform.runLater(() -> IpOutputField.appendText(str));
 //}
@@ -104,6 +97,7 @@ public class FXMLDocumentController implements Initializable {
                     progressbar.progressProperty().unbind();
                     progressbar.setProgress(1);
                     progressbar.setVisible(false);
+                    IpOutputField.appendText("Количество IP адресов:  "+(tmp.treemap.size()-2));
                 }
             });
         progressbar.progressProperty().unbind();
@@ -150,7 +144,7 @@ public class FXMLDocumentController implements Initializable {
            }
     }// end function
     
-     private void check_subnet(){
+    private void check_subnet(){
          String subnet=SUBNET.getText();
          String [] str;
           char a =',';
@@ -166,7 +160,6 @@ public class FXMLDocumentController implements Initializable {
            }
            else
            {   subnet=subnet.replace(a, b);
-               
                SUBNET.setText(subnet);
                if(subnet.contains("."))
                {
@@ -197,7 +190,7 @@ public class FXMLDocumentController implements Initializable {
                }
                  else
                  {
-              Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                       Alert alert = new Alert(Alert.AlertType.INFORMATION);
                        alert.setTitle("Ошибка");
                        alert.setHeaderText(null);
                        alert.setContentText(" Подсеть задана не верно! ");
