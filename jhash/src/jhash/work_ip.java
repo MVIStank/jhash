@@ -257,6 +257,7 @@ public work_ip()
           long countIP=0;
           double seconds=0;
           String Str;
+          int count_keys_hashtable=0;
         // startTime=System.nanoTime();
                 if (pos==3)
                  { 
@@ -293,12 +294,15 @@ public work_ip()
                          {   
                             for(int j=0;j<=255;j++)
                               {
-                                 System.out.println(network[0]+"."+network[1]+"."+beg+"."+j);
+                                 //System.out.println(network[0]+"."+network[1]+"."+beg+"."+j);
+                                   Str= network[0]+"."+network[1]+"."+beg+"."+j;
+                                   treemap.put(count_keys_hashtable, Str);
                                   if (countIP==125)
                                      {
                                         this.task_worker=50;
                                      }
                                  countIP++;
+                                 count_keys_hashtable++;
                               }
                                  beg ++;
                                  if (beg==broadcast[2])
@@ -308,8 +312,8 @@ public work_ip()
                          }
                       endTime=System.nanoTime()-startTime;
                       seconds = (double)endTime / 1000000000.0;
-                      System.out.println("Time: " +seconds +" sec");
-                      System.out.println("Count IP: " +countIP);
+                     // System.out.println("Time: " +seconds +" sec");
+                    //  System.out.println("Count IP: " +countIP);
                       task_worker_status=false;
                  }//pos=2
                 if(pos==1)
@@ -323,8 +327,11 @@ public work_ip()
                               {     //beg2
                                    for(int i=1;i<=255;i++)
                                       {      
-                                       System.out.println(network[0]+"."+beg1+"."+beg2+"."+i);
-                                       countIP++;
+                                       //System.out.println(network[0]+"."+beg1+"."+beg2+"."+i);
+                                         Str=network[0]+"."+beg1+"."+beg2+"."+i;
+                                         treemap.put(count_keys_hashtable,Str);
+                                         countIP++;
+                                         count_keys_hashtable++;
                                       }
                                 beg2++;
                                }    
@@ -333,8 +340,8 @@ public work_ip()
                      }
                      endTime=System.nanoTime()-startTime;
                      seconds = (double)endTime / 1000000000.0;
-                     System.out.println("Time: " +seconds +" sec");
-                     System.out.println("Count IP: " +countIP);
+                     //System.out.println("Time: " +seconds +" sec");
+                    // System.out.println("Count IP: " +countIP);
                  }//pos=1
                 if(pos==0)
                  {  int beg0=network[pos];
@@ -349,7 +356,10 @@ public work_ip()
                              {
                                  for(int i=0;i<255;i++)
                                  {
-                                     System.out.println(beg0+"."+beg1+"."+beg2+"."+i);
+                                     //System.out.println(beg0+"."+beg1+"."+beg2+"."+i);
+                                     Str=beg0+"."+beg1+"."+beg2+"."+i;
+                                     treemap.put(count_keys_hashtable, Str);
+                                     count_keys_hashtable++;
                                      countIP++;
                                  }
                                beg2++;  
@@ -363,8 +373,8 @@ public work_ip()
                        }
                     endTime=System.nanoTime()-startTime;
                     seconds = (double)endTime / 1000000000.0;
-                    System.out.println("Time: " +seconds +" sec"); 
-                    System.out.println("Count IP: " +countIP);
+                   // System.out.println("Time: " +seconds +" sec"); 
+                    //System.out.println("Count IP: " +countIP);
                     task_worker_status=false;   
                  }//pos=1
                    }// end print()

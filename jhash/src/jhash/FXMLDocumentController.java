@@ -23,6 +23,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.CheckBox;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.ProgressBar;
 
 
@@ -59,37 +61,26 @@ public class FXMLDocumentController implements Initializable {
   //  Platform.runLater(() -> IpOutputField.appendText(str));
 //}
     
-  public Task createWorker() {
-    return new Task() {
-      @Override
-      protected Object call() throws Exception {
-           updateProgress(0.5, 1);   
-         // while(tmp.task_worker_status){
-           //  updateProgress(0.5, 1);    
-          Thread.sleep(2000);
-         tmp.print();
-          // System.out.println();
-         Set<Integer> keys = tmp.treemap.keySet();
-        for(Integer key: keys){
-          // System.out.println("Value of "+key+" is: "+tmp.treemap.get(key));
-              Platform.runLater(() ->  IpOutputField.appendText(tmp.treemap.get(key)));
-              Platform.runLater(() ->  IpOutputField.appendText("\n"));
-          }
-          // Thread.sleep(2000);
-            updateProgress(1, 1);
-         // Thread.sleep(5000);
-            //progressbar.setProgress(0);
-            progressbar.setVisible(false);
-            button.setDisable(false);
-             progressbar.progressProperty().unbind();
-      
-       
-            return true;
-}
+  public Task createWorker() 
+  {
+    return new Task() 
+     {
+        @Override
+        protected Object call() throws Exception 
+        {
+             updateProgress(0.5, 1);     
+             Thread.sleep(2000);
+             tmp.print();
+             Set<Integer> keys = tmp.treemap.keySet();
+               for(Integer key: keys)
+                {  
+                   Platform.runLater(() ->  IpOutputField.appendText(tmp.treemap.get(key)));
+                   Platform.runLater(() ->  IpOutputField.appendText("\n"));
+                }
+             return true;
+        }
     };
   }
-
-    
      @FXML
     private void handleButtonAction(ActionEvent event) {
         IpOutputField.clear();
@@ -103,19 +94,27 @@ public class FXMLDocumentController implements Initializable {
             button.setDisable(true);
             progressbar.setVisible(true);
             progressbar.setProgress(0);
-             copyWorker = createWorker();
+            copyWorker = createWorker();
+            copyWorker.setOnSucceeded(new EventHandler<WorkerStateEvent>()
+            {
+               @Override
+               public void handle(WorkerStateEvent t)
+                {
+                    button.setDisable(false);
+                    progressbar.progressProperty().unbind();
+                    progressbar.setProgress(1);
+                    progressbar.setVisible(false);
+                }
+            });
         progressbar.progressProperty().unbind();
-        
         progressbar.progressProperty().bind(copyWorker.progressProperty());
-            new Thread(copyWorker).start();
-         
-          
-         //  tmp.print();
+        new Thread(copyWorker).start();
         }
     }
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+    {
         // TODO
        
      //   OutputStream out = new OutputStream() {
@@ -125,9 +124,9 @@ public class FXMLDocumentController implements Initializable {
       //  }
   //  };
  //   System.setOut(new PrintStream(out, true));
-}
- 
-    private void check_mask(){
+    }
+    private void check_mask()
+    {
         String mask=MASK.getText();
          if(mask== null || mask.length() == 0)
           {
@@ -207,7 +206,5 @@ public class FXMLDocumentController implements Initializable {
            } //end else
           tmp.set_ip(subnet_network);
      }//end function
-    
-    
 }
 
