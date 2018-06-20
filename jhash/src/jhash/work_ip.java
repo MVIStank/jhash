@@ -16,10 +16,10 @@ private int pos;
     
 public work_ip()
  {
-          int [] ip=new int[4];
-          int [] mask= new int[4];
-           this.ip=ip;
-           this.mask=mask;    
+   int [] ip=new int[4];
+   int [] mask= new int[4];
+   this.ip=ip;
+   this.mask=mask;    
  }
 public void set_mask(int mask_int)
  {   
@@ -168,15 +168,15 @@ public void set_ip( int []  subnet_network)
 private int found_octet () //found magic octet
         {  int pos=0;
             for (int i=0; i<ip.length;i++)
-         {
-             if (this.mask[i]!=255)
-             { //int y =256 - ip[i];
-               pos=i;
-               this.pos=pos;
-              break;
-             } 
-         }
-         return pos;
+             {
+                if (this.mask[i]!=255)
+                { //int y =256 - ip[i];
+                  pos=i;
+                  this.pos=pos;
+                 break;
+                } 
+             }
+                  return pos;
         }//fucntion
      
 private int magic_number() 
@@ -198,7 +198,6 @@ private void found_network()
                   res=i;
                   this.res=res;
              }
-
          }
      }
 public int[] build_network()
@@ -208,7 +207,7 @@ public int[] build_network()
          int pos=this.pos;
          int []mas =new int [4];
           for(int i=0;i<ip.length;i++)
-          {
+           {
              mas[i]=ip[i];
              if (i==pos)
              { 
@@ -216,10 +215,10 @@ public int[] build_network()
              }
            }
           for (int i=0;i<ip.length;i++)
-          {    
+           {    
               if (i>pos)
               {mas[i]=0;}
-          }
+           }
      return mas;
      }
     
@@ -231,9 +230,9 @@ public int[] build_broadcast ()
          for (int i=0;i<mask.length;i++)
          {
            if (mask[i]==255)
-           {
+            {
                broadcast[i]=ip[i];
-           }
+            }
            else 
                if  (mask[i]==0)
                 {
@@ -253,12 +252,12 @@ public void print ()
          int [] broadcast =new int [4];  
          network=build_network();
          broadcast=build_broadcast();
-          long startTime=0;
-          long endTime=0;
-          long countIP=0;
-          double seconds=0;
-          String Str;
-          int count_keys_hashtable=0;
+         long startTime=0;
+         long endTime=0;
+         long countIP=0;
+         double seconds=0;
+         String Str;
+         int count_keys_hashtable=0;
         // startTime=System.nanoTime();
                 if (pos==3)
                  { 
