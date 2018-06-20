@@ -247,17 +247,21 @@ public int[] build_broadcast ()
      }
  
 public void print ()    
-     {    
-         int[] network=new int [4];
-         int [] broadcast =new int [4];  
-         network=build_network();
-         broadcast=build_broadcast();
-         long startTime=0;
-         long endTime=0;
-         long countIP=0;
-         double seconds=0;
-         String Str;
-         int count_keys_hashtable=0;
+     { 
+       if(!treemap.isEmpty())
+         {
+            treemap.clear();
+         };
+            int[] network=new int [4];
+            int [] broadcast =new int [4];  
+            network=build_network();
+            broadcast=build_broadcast();
+            long startTime=0;
+            long endTime=0;
+            long countIP=0;
+            double seconds=0;
+            String Str;
+            int count_keys_hashtable=0;
         // startTime=System.nanoTime();
                 if (pos==3)
                  { 

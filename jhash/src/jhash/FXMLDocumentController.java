@@ -15,6 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.CheckBox;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -61,10 +63,12 @@ public class FXMLDocumentController implements Initializable {
         @Override
         protected Object call() throws Exception 
         {
-             updateProgress(0.5, 1);     
+             updateProgress(0.5, 1); 
+             updateMessage("Working...");
              Thread.sleep(2000);
              tmp.print();
              Set<Integer> keys = tmp.treemap.keySet();
+             Thread.sleep(2000);
                for(Integer key: keys)
                 {  
                    Platform.runLater(() ->  IpOutputField.appendText(tmp.treemap.get(key)));
@@ -84,10 +88,19 @@ public class FXMLDocumentController implements Initializable {
         BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
         if(CheckBox.isSelected())     
         {   
+            label.setVisible(true);
             button.setDisable(true);
             progressbar.setVisible(true);
             progressbar.setProgress(0);
             copyWorker = createWorker();
+            copyWorker.messageProperty().addListener(new ChangeListener<String>()
+             {
+               public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
+                {
+                   System.out.println(newValue);
+                   label.setText(newValue);
+                }
+             });
             copyWorker.setOnSucceeded(new EventHandler<WorkerStateEvent>()
             {
                @Override
@@ -98,10 +111,13 @@ public class FXMLDocumentController implements Initializable {
                     progressbar.setProgress(1);
                     progressbar.setVisible(false);
                     IpOutputField.appendText("Количество IP адресов:  "+(tmp.treemap.size()-2));
+                   // label.setText("Completed!");
+                    label.setVisible(false);
                 }
             });
         progressbar.progressProperty().unbind();
         progressbar.progressProperty().bind(copyWorker.progressProperty());
+        
         new Thread(copyWorker).start();
         }
     }
