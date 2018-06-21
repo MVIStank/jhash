@@ -13,7 +13,6 @@
         <Button fx:id="button" layoutX="448.0" layoutY="467.0" onAction="#handleButtonAction" text="Расчитать" />
         <TextField fx:id="SUBNET" layoutX="5.0" layoutY="55.0" prefHeight="25.0" prefWidth="205.0" promptText="192.168.0.0" />
         <TextField fx:id="MASK" layoutX="210.0" layoutY="55.0" prefHeight="25.0" prefWidth="62.0" promptText="24" />
-        <TextArea fx:id="IpOutputField" editable="false" layoutX="3.0" layoutY="209.0" prefHeight="212.0" prefWidth="591.0" />
         <TextField alignment="TOP_CENTER" editable="false" layoutX="6.0" layoutY="26.0" prefHeight="25.0" prefWidth="267.0" text="Введите подсеть и маску.." />
       <Accordion />
       <CheckBox fx:id="CheckBox" layoutX="12.0" layoutY="435.0" mnemonicParsing="false" text="Показать ip адреса">
@@ -27,6 +26,7 @@
       <TextField fx:id="BroadcastField" layoutX="96.0" layoutY="179.0" prefHeight="25.0" prefWidth="171.0" />
       <TextField alignment="TOP_CENTER" editable="false" layoutX="5.0" layoutY="106.0" prefHeight="25.0" prefWidth="88.0" text="Network" />
       <TextField fx:id="NetField" editable="false" layoutX="96.0" layoutY="106.0" prefHeight="25.0" prefWidth="171.0" />
+      <ListView fx:id="listView" layoutX="8.0" layoutY="215.0" prefHeight="200.0" prefWidth="575.0" />
       <ProgressBar fx:id="progressbar" layoutX="182.0" layoutY="305.0" prefWidth="200.0" progress="0.0" visible="false" />
       <Label fx:id="label" layoutX="264.0" layoutY="333.0" text="Label" visible="false" />
     </children>

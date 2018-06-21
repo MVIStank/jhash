@@ -7,8 +7,6 @@ public class work_ip
 {    
 public int [] ip;
 public int [] mask;
-public int task_worker;
-public boolean task_worker_status=true;
 TreeMap<Integer, String> treemap = new TreeMap<Integer, String>();
 private int res; // subnet network
 private int pos;
@@ -256,41 +254,22 @@ public void print ()
             int [] broadcast =new int [4];  
             network=build_network();
             broadcast=build_broadcast();
-            long startTime=0;
-            long endTime=0;
             long countIP=0;
-            double seconds=0;
             String Str;
             int count_keys_hashtable=0;
-        // startTime=System.nanoTime();
                 if (pos==3)
                  { 
-                     startTime=System.nanoTime();
                      for (int i=network[pos];i<=broadcast[pos];i++)
                        {   
                           // System.out.println(network[0]+"."+network[1]+"."+network[2]+"."+i);
                            Str=network[0]+"."+network[1]+"."+network[2]+"."+i;
                            treemap.put(i, Str);
-                           if (countIP==125)
-                            {
-                                this.task_worker=50;
-                            }
-                           if (countIP==250)
-                            {   
-                                this.task_worker=100;
-                                 task_worker_status=false;
-                            }
                            countIP++;
                        }
-                          endTime=System.nanoTime()-startTime;
-                          seconds = (double)endTime / 1000000000.0;
-                          //System.out.println("Time: " +seconds +" sec");
-                         // System.out.println("Count IP: " +countIP);
                  }//pos=3
                 if (pos==2)
                  {   
                     int beg=network[pos];
-                    startTime=System.nanoTime();
                       while(beg<=broadcast[2]) 
                          {   
                             for(int j=0;j<=255;j++)
@@ -298,30 +277,16 @@ public void print ()
                                  //System.out.println(network[0]+"."+network[1]+"."+beg+"."+j);
                                    Str= network[0]+"."+network[1]+"."+beg+"."+j;
                                    treemap.put(count_keys_hashtable, Str);
-                                  if (countIP==125)
-                                     {
-                                        this.task_worker=50;
-                                     }
                                  countIP++;
                                  count_keys_hashtable++;
                               }
                                  beg ++;
-                                 if (beg==broadcast[2])
-                                     {
-                                        this.task_worker=100;
-                                     }
                          }
-                      endTime=System.nanoTime()-startTime;
-                      seconds = (double)endTime / 1000000000.0;
-                     // System.out.println("Time: " +seconds +" sec");
-                    //  System.out.println("Count IP: " +countIP);
-                      task_worker_status=false;
                  }//pos=2
                 if(pos==1)
-                 {
+                 {   System.out.println("pos=1");
                      int beg1=network[pos];
                      int beg2=0;
-                     startTime=System.nanoTime();
                        while(beg1<=broadcast[pos]) 
                          {  //  beg1;
                             while(beg2<=255)
@@ -339,16 +304,12 @@ public void print ()
                       beg1++;
                       beg2=0;
                      }
-                     endTime=System.nanoTime()-startTime;
-                     seconds = (double)endTime / 1000000000.0;
-                     //System.out.println("Time: " +seconds +" sec");
-                    // System.out.println("Count IP: " +countIP);
                  }//pos=1
                 if(pos==0)
-                 {  int beg0=network[pos];
+                 {  System.out.println("pos=0");
+                     int beg0=network[pos];
                     int beg1=0;
                     int beg2=0;
-                    startTime=System.nanoTime();
                       while(beg0<=broadcast[0])
                        {
                           while(beg1<=255)
@@ -372,11 +333,6 @@ public void print ()
                         beg1=0;
                         beg2=0;
                        }
-                    endTime=System.nanoTime()-startTime;
-                    seconds = (double)endTime / 1000000000.0;
-                   // System.out.println("Time: " +seconds +" sec"); 
-                    //System.out.println("Count IP: " +countIP);
-                    task_worker_status=false;   
                  }//pos=1
                    }// end print()
 }//class

@@ -6,6 +6,9 @@ import javafx.scene.control.Alert;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,12 +17,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.CheckBox;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+//import javafx.application.Platform;
+//import javafx.beans.value.ChangeListener;
+//import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 
 
@@ -40,101 +46,97 @@ public class FXMLDocumentController implements Initializable {
     private TextField BroadcastField;
      @FXML
     private TextField MaskField;
-     @FXML
-    private TextArea IpOutputField;
      @FXML 
     private CheckBox CheckBox;
      @FXML 
     private ProgressBar progressbar;
-     @FXML 
-    private TextField test;
+     @FXML
+    private ListView listView;
 
     Task copyWorker;
 
   work_ip tmp=new work_ip ();
+  ListView<String> myListView = new ListView<>();
+  ObservableList <String> list =FXCollections.observableArrayList();
+  Set<Integer> keys;
   //  public void appendText(String str) {
   //  Platform.runLater(() -> IpOutputField.appendText(str));
 //}
     
-  public Task createWorker() 
+public Task createWorker() 
   {
     return new Task() 
      {
         @Override
         protected Object call() throws Exception 
         {
-             updateProgress(0.5, 1); 
-             updateMessage("Working...");
-             Thread.sleep(2000);
+           updateProgress(0.5, 1); 
+            updateMessage("Working...");
+           Thread.sleep(7000);
              tmp.print();
-             Set<Integer> keys = tmp.treemap.keySet();
-             Thread.sleep(2000);
-               for(Integer key: keys)
-                {  
-                   Platform.runLater(() ->  IpOutputField.appendText(tmp.treemap.get(key)));
-                   Platform.runLater(() ->  IpOutputField.appendText("\n"));
-                }
+             keys = tmp.treemap.keySet();
+             for(Integer key: keys)
+              {
+             Platform.runLater(() -> list.addAll(tmp.treemap.get(key)));
+              
+             Platform.runLater(() -> listView.setItems(list));
+              }
              return true;
         }
     };
   }
      @FXML
-    private void handleButtonAction(ActionEvent event) {
-        IpOutputField.clear();
-        check_mask();
-        check_subnet();
-        NetField.setText(Arrays.toString(tmp.build_network()));
-        MaskField.setText(Arrays.toString(tmp.mask));
-        BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
-        if(CheckBox.isSelected())     
-        {   
-            label.setVisible(true);
-            button.setDisable(true);
-            progressbar.setVisible(true);
-            progressbar.setProgress(0);
-            copyWorker = createWorker();
-            copyWorker.messageProperty().addListener(new ChangeListener<String>()
-             {
-               public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
-                {
-                   label.setText(newValue);
-                }
-             });
-            copyWorker.setOnSucceeded(new EventHandler<WorkerStateEvent>()
+private void handleButtonAction(ActionEvent event) {
+  check_mask();
+  check_subnet();
+  NetField.setText(Arrays.toString(tmp.build_network()));
+  MaskField.setText(Arrays.toString(tmp.mask));
+  BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
+    if(CheckBox.isSelected())     
+      {   
+        if(keys !=null )
+          {
+            keys.clear();
+          }
+        if(list !=null)
+           {
+             list.clear();
+           }
+      label.setVisible(true);
+      button.setDisable(true);
+      progressbar.setVisible(true);
+      progressbar.setProgress(0);
+      copyWorker = createWorker();
+      copyWorker.messageProperty().addListener(new ChangeListener<String>()
+        {
+          public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
             {
-               @Override
-               public void handle(WorkerStateEvent t)
-                {
-                    button.setDisable(false);
-                    progressbar.progressProperty().unbind();
-                    progressbar.setProgress(1);
-                    progressbar.setVisible(false);
-                    IpOutputField.appendText("Количество IP адресов:  "+(tmp.treemap.size()-2));
-                   // label.setText("Completed!");
-                    label.setVisible(false);
-                }
-            });
-        progressbar.progressProperty().unbind();
-        progressbar.progressProperty().bind(copyWorker.progressProperty());
-        
+              label.setText(newValue);
+            }
+        });     
+      copyWorker.setOnSucceeded(new EventHandler<WorkerStateEvent>()
+        {
+          @Override
+           public void handle(WorkerStateEvent t)
+           {
+              button.setDisable(false);
+              progressbar.progressProperty().unbind();
+              progressbar.setProgress(1);
+              progressbar.setVisible(false);
+              // IpOutputField.appendText("Количество IP адресов:  "+(tmp.treemap.size()-2));
+              // label.setText("Completed!");
+              label.setVisible(false);
+            }
+        });
+       progressbar.progressProperty().unbind();
+       progressbar.progressProperty().bind(copyWorker.progressProperty());
         new Thread(copyWorker).start();
-        }
+      }
     }
     
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
-        // TODO
-       
-     //   OutputStream out = new OutputStream() {
-      //  @Override
-      //  public void write(int b) throws IOException {
-      //      appendText(String.valueOf((char) b));
-      //  }
-  //  };
- //   System.setOut(new PrintStream(out, true));
-    }
-    private void check_mask()
+public void initialize(URL url, ResourceBundle rb){  }
+private void check_mask()
     {
         String mask=MASK.getText();
          if(mask== null || mask.length() == 0)
@@ -159,7 +161,7 @@ public class FXMLDocumentController implements Initializable {
            }
     }// end function
     
-    private void check_subnet(){
+ private void check_subnet(){
          String subnet=SUBNET.getText();
          String [] str;
           char a =',';
