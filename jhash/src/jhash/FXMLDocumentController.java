@@ -15,11 +15,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.CheckBox;
-//import javafx.application.Platform;
-//import javafx.beans.value.ChangeListener;
-//import javafx.beans.value.ObservableValue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -54,7 +52,9 @@ public class FXMLDocumentController implements Initializable {
     private ListView listView;
 
     Task copyWorker;
+ 
 
+ private final static Logger log = LogManager.getLogger();
   work_ip tmp=new work_ip ();
   ListView<String> myListView = new ListView<>();
   ObservableList <String> list =FXCollections.observableArrayList();
@@ -148,7 +148,16 @@ private void check_mask()
               alert.showAndWait();
           }
          else
-           { int mask_int=Integer.parseInt(mask);
+             
+           { int mask_int=0;
+               try{
+                  mask_int=Integer.parseInt(mask);
+                  }
+               catch(NumberFormatException e)
+                  {
+                log.error("check_mask(): Parse_mask_error");
+                  }
+               //int mask_int=Integer.parseInt(mask);
               if (mask_int<0 || mask_int>32 )
                 { 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -191,7 +200,13 @@ private void check_mask()
                 }
                     for(int i=0; i<=3;i++) 
                     {    
+                        try{
                         subnet_network[i]=Integer.parseInt(str[i]);
+                           }
+                        catch(NumberFormatException ed)
+                           {
+                         log.error("check_subnet(): Parse_mask_error");   
+                           }
                     }
                     for (int i=0; i<=3;i++) 
                      {
