@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.logging.Level;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -141,14 +142,20 @@ private void handleButtonAction(ActionEvent event) {
     }
  
 @FXML
-private void handleButtonActionSave (ActionEvent event) throws IOException{
+private void handleButtonActionSave (ActionEvent event) {
     FileSave save =new FileSave();
     FileChooser fileChooser = new FileChooser();
    fileChooser.setTitle("Сохранить");
    fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
    fileChooser.setInitialFileName("result.txt");
    File file = fileChooser.showSaveDialog(null);
-   save.export_file(file, tmp.treemap);
+        try {
+            log.info("Попытка сохранить в файл");
+            save.export_file(file, tmp.treemap);
+            log.info("Файл сохранен!");
+        } catch (IOException ex) {
+            log.info("Ошибка при сохранении файла!",ex);
+        }
    
    
 }

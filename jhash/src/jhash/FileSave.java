@@ -12,16 +12,7 @@ import java.util.TreeMap;
 
 public class FileSave {
     
-     private String path; // путь для сохранения
-     private String Res;  // результат ?
-   
     
-     public String getPath (){
-         return this.path;
-     }
-     public void SetPath (String path){
-         this.path=path;
-     }
      public int export_file (File file, TreeMap<Integer, String> treemap) throws  IOException{
          
          FileWriter fileReader = new FileWriter(file);
