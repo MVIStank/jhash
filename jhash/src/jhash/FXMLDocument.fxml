@@ -29,5 +29,6 @@
       <ListView fx:id="listView" layoutX="8.0" layoutY="215.0" prefHeight="200.0" prefWidth="575.0" />
       <ProgressBar fx:id="progressbar" layoutX="182.0" layoutY="305.0" prefWidth="200.0" progress="0.0" visible="false" />
       <Label fx:id="label" layoutX="264.0" layoutY="333.0" text="Label" visible="false" />
+      <Button fx:id="buttonSave" layoutX="325.0" layoutY="467.0" mnemonicParsing="false" onAction="#handleButtonActionSave" text="Сохранить.." />
     </children>
 </AnchorPane>

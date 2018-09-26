@@ -1,6 +1,8 @@
 //Добавить проверку подсети и маски на наличие букв
 package jhash;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import javafx.scene.control.Alert;
 import java.net.URL;
@@ -25,6 +27,8 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.stage.FileChooser;
+
 
 
 public class FXMLDocumentController implements Initializable {
@@ -34,6 +38,8 @@ public class FXMLDocumentController implements Initializable {
     private Label label;
     @FXML
     private Button button;
+    @FXML
+    private Button buttonSave;
     @FXML
     private TextField SUBNET;
      @FXML
@@ -133,7 +139,19 @@ private void handleButtonAction(ActionEvent event) {
         new Thread(copyWorker).start();
       }
     }
-    
+ 
+@FXML
+private void handleButtonActionSave (ActionEvent event) throws IOException{
+    FileSave save =new FileSave();
+    FileChooser fileChooser = new FileChooser();
+   fileChooser.setTitle("Сохранить");
+   fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+   fileChooser.setInitialFileName("result.txt");
+   File file = fileChooser.showSaveDialog(null);
+   save.export_file(file, tmp.treemap);
+   
+   
+}
     @Override
 public void initialize(URL url, ResourceBundle rb){  }
 private void check_mask()

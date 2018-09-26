@@ -7,7 +7,7 @@ public class work_ip
 {    
 public int [] ip;
 public int [] mask;
-TreeMap<Integer, String> treemap = new TreeMap<Integer, String>();
+TreeMap<Integer, String> treemap = new TreeMap<>();
 private int res; // subnet network
 private int pos;
 
@@ -227,19 +227,17 @@ public int[] build_broadcast ()
          network=build_network();
          for (int i=0;i<mask.length;i++)
          {
-           if (mask[i]==255)
-            {
-               broadcast[i]=ip[i];
-            }
-           else 
-               if  (mask[i]==0)
-                {
-                  broadcast[i]=255; 
-                }
-                 else 
-                 { 
-                   broadcast[i]= (256-mask[i])+(network[pos])-1;
-                 }//else
+         switch (mask[i]) {
+             case 255:
+                 broadcast[i]=ip[i];
+                 break;
+             case 0:
+                 broadcast[i]=255;
+                 break;
+             default:
+                 broadcast[i]= (256-mask[i])+(network[pos])-1;
+                 break; //else
+         }
          }//for
      return broadcast;
      }
