@@ -4,8 +4,10 @@ package jhash;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javafx.animation.PauseTransition;
 import javafx.scene.control.Alert;
 import java.net.URL;
 import java.util.logging.Level;
@@ -19,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.CheckBox;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javafx.collections.FXCollections;
@@ -62,17 +65,15 @@ public class FXMLDocumentController implements Initializable {
     private ListView listView;
 
     Task copyWorker;
+    private final static Logger log = LogManager.getLogger();
+    work_ip tmp=new work_ip ();
+ //   ListView<String> myListView = new ListView<>();
+    ObservableList <String> list =FXCollections.observableArrayList();
+    Set<Integer> keys;
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) { }
 
- private final static Logger log = LogManager.getLogger();
-  work_ip tmp=new work_ip ();
-  ListView<String> myListView = new ListView<>();
-  ObservableList <String> list =FXCollections.observableArrayList();
-  Set<Integer> keys;
-
-  //  public void appendText(String str) {
-  //  Platform.runLater(() -> IpOutputField.appendText(str));
-//}
 
 
 
@@ -98,11 +99,11 @@ public class FXMLDocumentController implements Initializable {
         }
     };
   }
+
      @FXML
 private void handleButtonAction(ActionEvent event) {
   check_mask();
   check_subnet();
-  TimeField.setText(String.valueOf(new GregorianCalendar().getTime()));
   NetField.setText(Arrays.toString(tmp.build_network()));
   MaskField.setText(Arrays.toString(tmp.mask));
   BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
@@ -137,8 +138,6 @@ private void handleButtonAction(ActionEvent event) {
               progressbar.progressProperty().unbind();
               progressbar.setProgress(1);
               progressbar.setVisible(false);
-              // IpOutputField.appendText("Количество IP адресов:  "+(tmp.treemap.size()-2));
-              // label.setText("Completed!");
               label.setVisible(false);
             }
         });
@@ -153,22 +152,27 @@ private void handleButtonActionSave (ActionEvent event) {
     FileSave save =new FileSave();
     FileChooser fileChooser = new FileChooser();
    fileChooser.setTitle("Сохранить");
-   fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
    fileChooser.setInitialFileName("result.txt");
    File file = fileChooser.showSaveDialog(null);
-        try {
+   if (file !=null)
+   {
+       try {
            log.info("Попытка сохранить в файл");
-            save.export_file(file, tmp.treemap);
-          //  log.info("Файл сохранен!");
-        } catch (IOException ex) {
-          log.info("Ошибка при сохранении файла!",ex);
-        }
-   
-   
+           save.export_file(file, tmp.treemap);
+           log.info("Файл сохранен!");
+           }
+       catch (IOException ex)
+           {
+           log.info("Ошибка при сохранении файла!", ex);
+           }
+       catch (Exception ex)
+           {
+           ex.printStackTrace();
+           }
+   }
 }
 
-    @Override
-public void initialize(URL url, ResourceBundle rb){  }
+
 private void check_mask()
     {
         String mask=MASK.getText();
@@ -264,5 +268,6 @@ private void check_mask()
            } //end else
           tmp.set_ip(subnet_network);
      }//end function
+
 }
 
