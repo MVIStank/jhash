@@ -1,26 +1,38 @@
 package jhash;
 
+import java.io.Serializable;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
-public class work_ip 
+public class work_ip  implements Serializable
 {    
-public int [] ip;
-public int [] mask;
+private int [] ip;
+private int [] mask;
 TreeMap<Integer, String> treemap = new TreeMap<>();
 private int res; // subnet network
 private int pos;
+private int maskShort;
 
-    
 public work_ip()
- {
-   int [] ip=new int[4];
-   int [] mask= new int[4];
-   this.ip=ip;
-   this.mask=mask;    
+{
+     this.ip=new int[4];
+     this.mask= new int[4];
  }
+ public int [] getMask (){ return this.mask;}
+ public int [] getIp (){return this.ip;}
+
+ public void set_ip( int []  subnet_network)
+    {
+        this.ip=subnet_network;
+    }
+
+    public int getMaskShort(){
+    return this.maskShort;
+    }
+
 public void set_mask(int mask_int)
- {   
+ {
+     maskShort = mask_int;
         switch(mask_int)
         {
             case 0: 
@@ -158,10 +170,7 @@ public void set_mask(int mask_int)
         }
     }
     
-public void set_ip( int []  subnet_network)
-    {
-       this.ip=subnet_network;
-    }
+
  
 private int found_octet () //found magic octet
         {  int pos=0;

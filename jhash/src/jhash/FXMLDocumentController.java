@@ -3,6 +3,8 @@ package jhash;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -105,7 +107,7 @@ private void handleButtonAction(ActionEvent event) {
   check_mask();
   check_subnet();
   NetField.setText(Arrays.toString(tmp.build_network()));
-  MaskField.setText(Arrays.toString(tmp.mask));
+  MaskField.setText(Arrays.toString(tmp.getMask()));
   BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
     if(CheckBox.isSelected())     
       {   
@@ -163,7 +165,7 @@ private void handleButtonActionSave (ActionEvent event) {
            }
        catch (IOException ex)
            {
-           log.info("Ошибка при сохранении файла!", ex);
+           log.error("Ошибка при сохранении файла!", ex);
            }
        catch (Exception ex)
            {
@@ -171,9 +173,64 @@ private void handleButtonActionSave (ActionEvent event) {
            }
    }
 }
+    @FXML
+    private void handleButtonActionWriteObj (ActionEvent event)  {
+        FileSave save =new FileSave();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Сохранить");
+        fileChooser.setInitialFileName("result.txt");
+        File file = fileChooser.showSaveDialog(null);
+        if (file !=null)
+        {
+            WriteObj WriteObj = new WriteObj(tmp, file);
+            try {
+                WriteObj.run();
+            }
 
-
-private void check_mask()
+            catch(IOException ex)
+            {
+                log.error("Ошибка при сохранении файла!", ex);
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    @FXML
+    private void handleButtonActionRestoreObj (ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Открыть");
+        fileChooser.setInitialFileName("result.txt");
+        File file = fileChooser.showOpenDialog(null);
+        RestoreObj RestObj = new RestoreObj(file);
+        String tmp_new = "";
+        try {
+            tmp = RestObj.run();
+            for (int i = 0; i < tmp.getIp().length; i++) {
+                if (i == tmp.getIp().length - 1) {
+                    tmp_new += tmp.getIp()[i];
+                    break;
+                }
+                tmp_new += tmp.getIp()[i] + ".";
+            }
+            MASK.setText(Integer.toString(tmp.getMaskShort()));
+            SUBNET.setText(tmp_new);
+        } catch (FileNotFoundException ex) {
+            log.error("Ошибка при открытии файла!", ex);
+            ex.getStackTrace();
+        } catch (ClassNotFoundException ex) {
+            log.error("Ошибка при открытии файла: Класс не найден ", ex);
+            ex.getStackTrace();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText(null);
+            alert.setContentText(" Ошибка при попытки восстановления: объект был изменен ");
+            alert.showAndWait();
+        }
+    }
+    private void check_mask()
     {
         String mask=MASK.getText();
          if(mask== null || mask.length() == 0)
@@ -185,7 +242,6 @@ private void check_mask()
               alert.showAndWait();
           }
          else
-             
            { int mask_int=0;
                try{
                   mask_int=Integer.parseInt(mask);
