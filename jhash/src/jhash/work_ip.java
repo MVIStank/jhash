@@ -12,6 +12,7 @@ TreeMap<Integer, String> treemap = new TreeMap<>();
 private int res; // subnet network
 private int pos;
 private int maskShort;
+static final long serialVersionUID = 10L;
 
 public work_ip()
 {

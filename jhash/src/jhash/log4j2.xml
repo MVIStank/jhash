@@ -5,7 +5,7 @@
     <Console name="Console" target="SYSTEM_OUT">
       <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%level] %m%n"/>
     </Console>
-    <File name="FILE" fileName="${sys:user.home}/calc.log">
+    <File name="FILE" fileName="/home/vladimir/calc.log">
       <PatternLayout>
         <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%level]  %l - %msg%n</Pattern>
       </PatternLayout>

@@ -14,6 +14,7 @@ import java.net.URL;
 
 public class Jhash extends Application {
     private final static Logger log = LogManager.getLogger();
+    static boolean close_app = true;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -27,7 +28,11 @@ public class Jhash extends Application {
         stage.show();
 
     }
-
+    @Override
+    public void stop(){
+        close_app= false;
+        log.info("======stage is closing======");
+    }
     public static void main(String[] args) {
         log.info("======Start program======");
         launch(args);

@@ -1,42 +1,38 @@
-//Добавить проверку подсети и маски на наличие букв
+/*
+TODO:
+Добавить проверку подсети и маски на наличие букв
+кнопка отмена, при расчете
+исключение при закрытии восстановления +
+rewrite by task some hardly operation
+add show time +
+add socket
+*/
 package jhash;
 
-import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import javafx.animation.PauseTransition;
-import javafx.scene.control.Alert;
-import java.net.URL;
-import java.util.logging.Level;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.CheckBox;
-import javafx.util.Duration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
-
-
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 public class FXMLDocumentController implements Initializable {
   
@@ -65,42 +61,65 @@ public class FXMLDocumentController implements Initializable {
     private ProgressBar progressbar;
      @FXML
     private ListView listView;
+    @FXML
+    private TextFlow txtF;
+   // private  boolean exit_thread =true;
 
     Task copyWorker;
+
     private final static Logger log = LogManager.getLogger();
     work_ip tmp=new work_ip ();
- //   ListView<String> myListView = new ListView<>();
     ObservableList <String> list =FXCollections.observableArrayList();
+    ObservableList <String> listText =FXCollections.observableArrayList();
     Set<Integer> keys;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) { }
-
-
-
-
-    public Task createWorker()
-  {
-    return new Task() 
-     {
+    Task TimeShow = new Task() {
         @Override
-        protected Object call() throws Exception 
-        {
-           updateProgress(0.5, 1); 
-            updateMessage("Working...");
-           Thread.sleep(7000);
-             tmp.print();
-             keys = tmp.treemap.keySet();
-             for(Integer key: keys)
-              {
-             Platform.runLater(() -> list.addAll(tmp.treemap.get(key)));
-              
-             Platform.runLater(() -> listView.setItems(list));
-              }
-             return true;
+        protected Object call() throws Exception {
+            while(Jhash.close_app)
+            {
+                TimeShow Tm = new TimeShow();
+                TimeField.setText(Tm.time());
+                Thread.sleep(200);
+            }
+           return null;
         }
     };
-  }
+
+    Task createWorker()
+    {
+        return new Task()
+        {
+            @Override
+            protected Object call() throws Exception
+            {
+                updateProgress(0.5, 1);
+                updateMessage("Working...");
+                Thread.sleep(7000);
+                tmp.print();
+                keys = tmp.treemap.keySet();
+                for(Integer key: keys)
+                {
+                    Platform.runLater(() -> list.addAll(tmp.treemap.get(key)));
+
+                    Platform.runLater(() -> listView.setItems(list));
+                }
+                return true;
+            }
+        };
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+          new Thread(TimeShow).start();
+    }
+
+  public void  SetTimeField ( TextField TimeField){
+
+         this.TimeField = TimeField;
+      //    System.out.println(TimeField);
+    }
+
 
      @FXML
 private void handleButtonAction(ActionEvent event) {
@@ -186,7 +205,6 @@ private void handleButtonActionSave (ActionEvent event) {
             try {
                 WriteObj.run();
             }
-
             catch(IOException ex)
             {
                 log.error("Ошибка при сохранении файла!", ex);
@@ -205,29 +223,31 @@ private void handleButtonActionSave (ActionEvent event) {
         File file = fileChooser.showOpenDialog(null);
         RestoreObj RestObj = new RestoreObj(file);
         String tmp_new = "";
-        try {
-            tmp = RestObj.run();
-            for (int i = 0; i < tmp.getIp().length; i++) {
-                if (i == tmp.getIp().length - 1) {
-                    tmp_new += tmp.getIp()[i];
-                    break;
+        if(file != null) {
+            try {
+                tmp = RestObj.run();
+                for (int i = 0; i < tmp.getIp().length; i++) {
+                    if (i == tmp.getIp().length - 1) {
+                        tmp_new += tmp.getIp()[i];
+                        break;
+                    }
+                    tmp_new += tmp.getIp()[i] + ".";
                 }
-                tmp_new += tmp.getIp()[i] + ".";
+                MASK.setText(Integer.toString(tmp.getMaskShort()));
+                SUBNET.setText(tmp_new);
+            } catch (FileNotFoundException ex) {
+                log.error("Ошибка при открытии файла!", ex);
+                ex.getStackTrace();
+            } catch (ClassNotFoundException ex) {
+                log.error("Ошибка при открытии файла: Класс не найден ", ex);
+                ex.getStackTrace();
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Ошибка");
+                alert.setHeaderText(null);
+                alert.setContentText(" Ошибка при попытки восстановления: объект был изменен ");
+                alert.showAndWait();
             }
-            MASK.setText(Integer.toString(tmp.getMaskShort()));
-            SUBNET.setText(tmp_new);
-        } catch (FileNotFoundException ex) {
-            log.error("Ошибка при открытии файла!", ex);
-            ex.getStackTrace();
-        } catch (ClassNotFoundException ex) {
-            log.error("Ошибка при открытии файла: Класс не найден ", ex);
-            ex.getStackTrace();
-        } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText(null);
-            alert.setContentText(" Ошибка при попытки восстановления: объект был изменен ");
-            alert.showAndWait();
         }
     }
     private void check_mask()
@@ -324,6 +344,5 @@ private void handleButtonActionSave (ActionEvent event) {
            } //end else
           tmp.set_ip(subnet_network);
      }//end function
-
 }
 
