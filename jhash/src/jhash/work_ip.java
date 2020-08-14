@@ -170,9 +170,6 @@ public void set_mask(int mask_int)
                     break;               
         }
     }
-    
-
- 
 private int found_octet () //found magic octet
         {  int pos=0;
             for (int i=0; i<ip.length;i++)
@@ -187,15 +184,13 @@ private int found_octet () //found magic octet
                   return pos;
         }//fucntion
      
-private int magic_number() 
-     {   
+private int magic_number() {
          int y=found_octet();
          y=256-mask[y];
          return y;
      }
      
-private void found_network()
-     {   
+private void found_network() {
          int ips=magic_number();
          int masks=found_octet ();
          int res=0;
@@ -208,35 +203,28 @@ private void found_network()
              }
          }
      }
-public int[] build_network()
-     {   
+public int[] build_network() {
          found_network();
          int res=this.res;
          int pos=this.pos;
          int []mas =new int [4];
-          for(int i=0;i<ip.length;i++)
-           {
+          for(int i=0;i<ip.length;i++) {
              mas[i]=ip[i];
-             if (i==pos)
-             { 
-                 mas[i]=res;  
-             }
+             if (i==pos) { mas[i]=res; }
            }
-          for (int i=0;i<ip.length;i++)
-           {    
+          for (int i=0;i<ip.length;i++) {
               if (i>pos)
               {mas[i]=0;}
            }
      return mas;
      }
-    
-public int[] build_broadcast ()
-     {   int magic_number;
-         int[] network=new int [4];
-         int [] broadcast =new int [4];
-         network=build_network();
-         for (int i=0;i<mask.length;i++)
-         {
+
+public int[] build_broadcast () {
+    int magic_number;
+    int[] network=new int [4];
+    int [] broadcast =new int [4];
+    network=build_network();
+    for (int i=0;i<mask.length;i++) {
          switch (mask[i]) {
              case 255:
                  broadcast[i]=ip[i];
@@ -252,10 +240,8 @@ public int[] build_broadcast ()
      return broadcast;
      }
  
-public void print ()    
-     { 
-       if(!treemap.isEmpty())
-         {
+public void print () {
+       if(!treemap.isEmpty()) {
             treemap.clear();
          };
             int[] network=new int [4];
@@ -265,23 +251,18 @@ public void print ()
             long countIP=0;
             String Str;
             int count_keys_hashtable=0;
-                if (pos==3)
-                 { 
-                     for (int i=network[pos];i<=broadcast[pos];i++)
-                       {   
+                if (pos==3) {
+                     for (int i=network[pos];i<=broadcast[pos];i++) {
                           // System.out.println(network[0]+"."+network[1]+"."+network[2]+"."+i);
                            Str=network[0]+"."+network[1]+"."+network[2]+"."+i;
                            treemap.put(i, Str);
                            countIP++;
                        }
                  }//pos=3
-                if (pos==2)
-                 {   
+                if (pos==2) {
                     int beg=network[pos];
-                      while(beg<=broadcast[2]) 
-                         {   
-                            for(int j=0;j<=255;j++)
-                              {
+                      while(beg<=broadcast[2]) {
+                            for(int j=0;j<=255;j++) {
                                  //System.out.println(network[0]+"."+network[1]+"."+beg+"."+j);
                                    Str= network[0]+"."+network[1]+"."+beg+"."+j;
                                    treemap.put(count_keys_hashtable, Str);
@@ -291,8 +272,8 @@ public void print ()
                                  beg ++;
                          }
                  }//pos=2
-                if(pos==1)
-                 {   System.out.println("pos=1");
+                if(pos==1) {
+                    System.out.println("pos=1");
                      int beg1=network[pos];
                      int beg2=0;
                        while(beg1<=broadcast[pos]) 

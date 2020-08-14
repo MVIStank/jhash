@@ -17,8 +17,5 @@ public class RestoreObj {
         os = new ObjectInputStream(filestream);
         Object one = os.readObject();
         return (work_ip) one;
-
     }
-
-
 }

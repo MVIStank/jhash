@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressBar?>
@@ -13,10 +14,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.TextFlow?>
 
-
 <AnchorPane id="AnchorPane" focusTraversable="true" prefHeight="535.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jhash.FXMLDocumentController">
     <children>
-        <Button fx:id="button" layoutX="448.0" layoutY="467.0" onAction="#handleButtonAction" text="Расчитать" />
+        <Button fx:id="button" layoutX="448.0" layoutY="467.0" onAction="#handleButtonAction" text="Рассчитать" />
         <TextField fx:id="SUBNET" layoutX="5.0" layoutY="55.0" prefHeight="25.0" prefWidth="205.0" promptText="192.168.0.0" />
         <TextField fx:id="MASK" layoutX="210.0" layoutY="55.0" prefHeight="25.0" prefWidth="62.0" promptText="24" />
         <TextField alignment="TOP_CENTER" editable="false" layoutX="6.0" layoutY="26.0" prefHeight="25.0" prefWidth="267.0" text="Введите подсеть и маску.." />
@@ -45,5 +45,6 @@
          </content>
     </TitledPane>
       <TextField fx:id="TimeField" editable="false" layoutX="492.0" layoutY="13.0" prefHeight="26.0" prefWidth="88.0" />
+      <Hyperlink fx:id="Stop_Handler" layoutX="252.0" layoutY="359.0" onAction="#HandlerMouseCancelclick" text="Отменить?" visible="false" />
     </children>
 </AnchorPane>

@@ -1,9 +1,9 @@
 /*
 TODO:
-Добавить проверку подсети и маски на наличие букв
-кнопка отмена, при расчете
+Добавить проверку подсети и маски на наличие букв +
+кнопка отмена, при расчете +
 исключение при закрытии восстановления +
-rewrite by task some hardly operation
+rewrite by task some hardly operation ( by future task)
 add show time +
 add socket
 */
@@ -15,14 +15,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,44 +60,41 @@ public class FXMLDocumentController implements Initializable {
      @FXML
     private ListView listView;
     @FXML
-    private TextFlow txtF;
-   // private  boolean exit_thread =true;
+    private  Hyperlink Stop_Handler;
 
     Task copyWorker;
 
     private final static Logger log = LogManager.getLogger();
     work_ip tmp=new work_ip ();
     ObservableList <String> list =FXCollections.observableArrayList();
-    ObservableList <String> listText =FXCollections.observableArrayList();
     Set<Integer> keys;
 
     Task TimeShow = new Task() {
         @Override
         protected Object call() throws Exception {
-            while(Jhash.close_app)
-            {
-                TimeShow Tm = new TimeShow();
-                TimeField.setText(Tm.time());
+          TimeShow Tm = new TimeShow();
+            while(Jhash.close_app) {
+                try {
+                  TimeField.setText(Tm.time());
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
                 Thread.sleep(200);
             }
            return null;
         }
     };
 
-    Task createWorker()
-    {
-        return new Task()
-        {
+    Task createWorker() {
+        return new Task() {
             @Override
-            protected Object call() throws Exception
-            {
+            protected Object call() throws Exception {
                 updateProgress(0.5, 1);
                 updateMessage("Working...");
                 Thread.sleep(7000);
                 tmp.print();
                 keys = tmp.treemap.keySet();
-                for(Integer key: keys)
-                {
+                for(Integer key: keys) {
                     Platform.runLater(() -> list.addAll(tmp.treemap.get(key)));
 
                     Platform.runLater(() -> listView.setItems(list));
@@ -110,107 +105,115 @@ public class FXMLDocumentController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-          new Thread(TimeShow).start();
+        new Thread(TimeShow).start();
     }
 
-  public void  SetTimeField ( TextField TimeField){
+  public void  SetTimeField ( TextField TimeField){ this.TimeField = TimeField; }
 
-         this.TimeField = TimeField;
-      //    System.out.println(TimeField);
+    @FXML
+   private void  HandlerMouseCancelclick(ActionEvent event){
+        if (copyWorker.isRunning()) {
+           log.info("Остановка потока вывода");
+            button.setDisable(false);
+            Stop_Handler.setVisible(false);
+            progressbar.progressProperty().unbind();
+            progressbar.setVisible(false);
+            buttonSave.setDisable(false);
+            label.setVisible(false);
+            copyWorker.cancel(true);
+         }
     }
-
-
-     @FXML
-private void handleButtonAction(ActionEvent event) {
-  check_mask();
-  check_subnet();
-  NetField.setText(Arrays.toString(tmp.build_network()));
-  MaskField.setText(Arrays.toString(tmp.getMask()));
-  BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
-    if(CheckBox.isSelected())     
-      {   
-        if(keys !=null )
-          {
-            keys.clear();
-          }
-        if(list !=null)
-           {
-             list.clear();
-           }
-      label.setVisible(true);
-      button.setDisable(true);
-      progressbar.setVisible(true);
-      progressbar.setProgress(0);
-      copyWorker = createWorker();
-      copyWorker.messageProperty().addListener(new ChangeListener<String>()
-        {
-          public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
-            {
-              label.setText(newValue);
-            }
-        });     
-      copyWorker.setOnSucceeded(new EventHandler<WorkerStateEvent>()
-        {
-          @Override
-           public void handle(WorkerStateEvent t)
-           {
-              button.setDisable(false);
-              progressbar.progressProperty().unbind();
-              progressbar.setProgress(1);
-              progressbar.setVisible(false);
-              label.setVisible(false);
-            }
-        });
-       progressbar.progressProperty().unbind();
-       progressbar.progressProperty().bind(copyWorker.progressProperty());
-        new Thread(copyWorker).start();
-    }
-    }
+    @FXML
+   private void handleButtonAction(ActionEvent event) {
+         if (check_mask() == 0 && check_subnet() == 0) {
+             NetField.setText(Arrays.toString(tmp.build_network()));
+             MaskField.setText(Arrays.toString(tmp.getMask()));
+             BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
+             if (CheckBox.isSelected()) {
+                 if (keys != null) {
+                     keys.clear();
+                 }
+                 if (list != null) {
+                     list.clear();
+                 }
+                 label.setVisible(true);
+                 button.setDisable(true);
+                 Stop_Handler.setVisible(true);
+                 buttonSave.setDisable(true);
+                 progressbar.setVisible(true);
+                 progressbar.setProgress(0);
+                 copyWorker = createWorker();
+                 copyWorker.messageProperty().addListener(new ChangeListener<String>() {
+                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                         label.setText(newValue);
+                     }
+                 });
+                 copyWorker.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                     @Override
+                     public void handle(WorkerStateEvent t) {
+                         button.setDisable(false);
+                       //  button.setText("Рассчитать");
+                         Stop_Handler.setVisible(false);
+                         progressbar.progressProperty().unbind();
+                         progressbar.setProgress(1);
+                         progressbar.setVisible(false);
+                         buttonSave.setDisable(false);
+                         label.setVisible(false);
+                     }
+                 });
+                 progressbar.progressProperty().unbind();
+                 progressbar.progressProperty().bind(copyWorker.progressProperty());
+                 new Thread(copyWorker).start();
+             }
+         }
+     }
  
-@FXML
-private void handleButtonActionSave (ActionEvent event) {
-    FileSave save =new FileSave();
+  @FXML
+  private void handleButtonActionSave (ActionEvent event) {
+    FileSave save = new FileSave();
     FileChooser fileChooser = new FileChooser();
-   fileChooser.setTitle("Сохранить");
-   fileChooser.setInitialFileName("result.txt");
-   File file = fileChooser.showSaveDialog(null);
-   if (file !=null)
-   {
-       try {
-           log.info("Попытка сохранить в файл");
-           save.export_file(file, tmp.treemap);
-           log.info("Файл сохранен!");
-           }
-       catch (IOException ex)
-           {
-           log.error("Ошибка при сохранении файла!", ex);
-           }
-       catch (Exception ex)
-           {
-           ex.printStackTrace();
-           }
+    fileChooser.setTitle("Сохранить");
+    fileChooser.setInitialFileName("result.txt");
+    File file = fileChooser.showSaveDialog(null);
+    if (file != null) {
+        try {
+            log.info("Попытка сохранить в файл");
+            save.export_file(file, tmp.treemap);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Успех");
+            alert.setHeaderText(null);
+            alert.setContentText(" Файл сохранен ");
+            alert.showAndWait();
+            log.info("Файл сохранен");
+        } catch (IOException ex) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText(null);
+            alert.setContentText(" Ошибка при сохранении файла! ");
+            alert.showAndWait();
+            log.error("Ошибка при сохранении файла!", ex);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
    }
-}
     @FXML
     private void handleButtonActionWriteObj (ActionEvent event)  {
-        FileSave save =new FileSave();
+       FileSave save =new FileSave();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Сохранить");
         fileChooser.setInitialFileName("result.txt");
         File file = fileChooser.showSaveDialog(null);
-        if (file !=null)
-        {
+        if (file !=null) {
             WriteObj WriteObj = new WriteObj(tmp, file);
             try {
                 WriteObj.run();
+                log.info ("Объект записан в файл");
             }
-            catch(IOException ex)
-            {
-                log.error("Ошибка при сохранении файла!", ex);
+            catch(IOException ex) {
+                log.error("Ошибка при сохранении объекта!", ex);
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -250,19 +253,16 @@ private void handleButtonActionSave (ActionEvent event) {
             }
         }
     }
-    private void check_mask()
-    {
+    private int check_mask() {
         String mask=MASK.getText();
-         if(mask== null || mask.length() == 0)
-          {
+         if(mask== null || mask.length() == 0) {
               Alert alert = new Alert(Alert.AlertType.INFORMATION);
               alert.setTitle("Ошибка");
               alert.setHeaderText(null);
               alert.setContentText(" Введите маску! ");
               alert.showAndWait();
           }
-         else
-           { int mask_int=0;
+         else { int mask_int=0;
                try{
                   mask_int=Integer.parseInt(mask);
                   }
@@ -271,78 +271,85 @@ private void handleButtonActionSave (ActionEvent event) {
                 log.error("check_mask(): Parse_mask_error");
                   }
                //int mask_int=Integer.parseInt(mask);
-              if (mask_int<0 || mask_int>32 )
-                { 
+              if (mask_int<=0 || mask_int>32 ) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Ошибка");
                 alert.setHeaderText(null);
-                alert.setContentText(" Маска должна быть в диапозоне от 0 до 32 ");
-                alert.showAndWait();              
-                }  
-              tmp.set_mask(mask_int);
+                alert.setContentText(" Маска должна быть в диапозоне от 1 до 32 ");
+                alert.showAndWait();
+                }
+              else {
+                  tmp.set_mask(mask_int);
+                  return 0;
+              }
+            //  tmp.set_mask(mask_int);
            }
+        return -1;
     }// end function
     
- private void check_subnet(){
+ private int check_subnet(){
          String subnet=SUBNET.getText();
          String [] str;
           char a =',';
           char b= '.';
          int [] subnet_network=new int[4];
-          if( subnet.length() == 0)
-           {
+          if( subnet.length() == 0) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
               alert.setTitle("Ошибка");
               alert.setHeaderText(null);
               alert.setContentText(" Введите подсеть! ");
-              alert.showAndWait();   
+              alert.showAndWait();
+              return -1;
            }
-           else
-           {   subnet=subnet.replace(a, b);
+           else {
+               subnet=subnet.replace(a, b);
                SUBNET.setText(subnet);
-               if(subnet.contains("."))
-               {
+               if(subnet.contains(".")) {
                 str = subnet.split("[.]"); 
-                if(str.length<=3)
-                {
+                if(str.length<=3) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Ошибка");
                     alert.setHeaderText(null);
                     alert.setContentText("  октеты заполнены неверно!");
                     alert.showAndWait();
+                    return -1;
                 }
-                    for(int i=0; i<=3;i++) 
-                    {    
+                    for(int i=0; i<=3;i++) {
                         try{
                         subnet_network[i]=Integer.parseInt(str[i]);
                            }
-                        catch(NumberFormatException ed)
-                           {
+                        catch(NumberFormatException ed) {
                          log.error("check_subnet(): Parse_mask_error");
+                               Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                               alert.setTitle("Ошибка");
+                               alert.setHeaderText(null);
+                               alert.setContentText("  Октеты содержат недопустимые значения!");
+                               alert.showAndWait();
+                               return -1;
                            }
                     }
-                    for (int i=0; i<=3;i++) 
-                     {
-                      if (subnet_network[i] < 0 || subnet_network[i] > 255)
-                       {
+                    for (int i=0; i<=3;i++) {
+                      if (subnet_network[i] < 0 || subnet_network[i] > 255) {
                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
                        alert.setTitle("Ошибка");
                        alert.setHeaderText(null);
                        alert.setContentText(" Октет должен быть в диапозоне от 0 до 255 ");
                        alert.showAndWait();
-                       }     
+                       return -1;
+                      }
                      }
                }
-                 else
-                 {
+                 else {
                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
                        alert.setTitle("Ошибка");
                        alert.setHeaderText(null);
                        alert.setContentText(" Подсеть задана не верно! ");
                        alert.showAndWait();
+                     return -1;
                   }
            } //end else
           tmp.set_ip(subnet_network);
+           return 0;
      }//end function
 }
 
