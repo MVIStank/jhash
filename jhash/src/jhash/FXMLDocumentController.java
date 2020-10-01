@@ -28,9 +28,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 public class FXMLDocumentController implements Initializable {
   
@@ -72,7 +70,7 @@ public class FXMLDocumentController implements Initializable {
     Task TimeShow = new Task() {
         @Override
         protected Object call() throws Exception {
-          TimeShow Tm = new TimeShow();
+            TimeShow Tm = new TimeShow();
             while(Jhash.close_app) {
                 try {
                   TimeField.setText(Tm.time());
@@ -93,9 +91,9 @@ public class FXMLDocumentController implements Initializable {
                 updateMessage("Working...");
                 Thread.sleep(7000);
                 tmp.print();
-                keys = tmp.treemap.keySet();
+                keys = tmp.getMap().keySet();
                 for(Integer key: keys) {
-                    Platform.runLater(() -> list.addAll(tmp.treemap.get(key)));
+                    Platform.runLater(() -> list.addAll(tmp.getMap().get(key)));
 
                     Platform.runLater(() -> listView.setItems(list));
                 }
@@ -178,7 +176,7 @@ public class FXMLDocumentController implements Initializable {
     if (file != null) {
         try {
             log.info("Попытка сохранить в файл");
-            save.export_file(file, tmp.treemap);
+            save.export_file(file, tmp.getMap());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Успех");
             alert.setHeaderText(null);
