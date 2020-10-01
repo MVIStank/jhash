@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
-public class work_ip  implements Serializable
+public final class work_ip  implements Serializable
 {    
 private int [] ip;
 private int [] mask;
