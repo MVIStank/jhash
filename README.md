@@ -1,2 +1,2 @@
 # jhash
-This is simple ip calculator. 
+This is a simple ip calculator. 
