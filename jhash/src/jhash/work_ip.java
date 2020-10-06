@@ -42,13 +42,11 @@ public work_ip()
 
     public int getSummaryAddr() {
        int sum;
-        System.out.println(getMaskShort());
        if (getMaskShort() == 32 || getMaskShort() == 31)
            sum = 1;
        else {
            sum = (int) Math.pow(2,32 - getMaskShort() ) - 2;
        }
-        System.out.println(sum);
         return sum;
     }
 
@@ -261,7 +259,7 @@ public void print () {
                          }
                  }//pos=2
                 if(pos == 1) {
-                    System.out.println("pos=1");
+                   // System.out.println("pos=1");
                      int beg1 = network[pos];
                      int beg2 = 0;
                        while(beg1 <= broadcast[pos])

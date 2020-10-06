@@ -67,6 +67,11 @@ public class FXMLDocumentController implements Initializable {
     private  Hyperlink Stop_Handler;
     @FXML
     private TextField SumAddrField;
+    @FXML
+    private Button WriteObjButton;
+    @FXML
+    private Button RestoreButton;
+
     Task copyWorker;
     Alert alert;
 
@@ -148,7 +153,9 @@ public class FXMLDocumentController implements Initializable {
                  label.setVisible(true);
                  button.setDisable(true);
                  Stop_Handler.setVisible(true);
+                 WriteObjButton.setDisable(true);
                  buttonSave.setDisable(true);
+                 RestoreButton.setDisable(true);
                  progressbar.setVisible(true);
                  progressbar.setProgress(0);
                  copyWorker = createWorker();
@@ -168,6 +175,8 @@ public class FXMLDocumentController implements Initializable {
                          progressbar.setVisible(false);
                          buttonSave.setDisable(false);
                          label.setVisible(false);
+                         WriteObjButton.setDisable(false);
+                         RestoreButton.setDisable(false);
                      }
                  });
                  progressbar.progressProperty().unbind();
