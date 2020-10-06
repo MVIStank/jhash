@@ -132,6 +132,8 @@ public class FXMLDocumentController implements Initializable {
             progressbar.progressProperty().unbind();
             progressbar.setVisible(false);
             buttonSave.setDisable(false);
+            WriteObjButton.setDisable(false);
+            RestoreButton.setDisable(false);
             label.setVisible(false);
             copyWorker.cancel(true);
          }
