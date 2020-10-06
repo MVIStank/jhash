@@ -1,6 +1,5 @@
 /*
 TODO:
-Добавить проверку подсети и маски на наличие букв +
 кнопка отмена, при расчете +
 исключение при закрытии восстановления +
 rewrite by task some hardly operation ( by future task)
@@ -9,7 +8,7 @@ add socket
 разделить функицю вывода маски на расчет и на печать
 переделать фукнцию сохранения ( только печатать , не расчитывать)
 логировние
-переделать вывод ошибок ( один обект)
+переделать вывод ошибок ( один обект) +
 блокировка кнопок при расчете ( save & restore)
 Исключения
 */
@@ -66,8 +65,10 @@ public class FXMLDocumentController implements Initializable {
     private ListView<String> listView;
     @FXML
     private  Hyperlink Stop_Handler;
-
+    @FXML
+    private TextField SumAddrField;
     Task copyWorker;
+    Alert alert;
 
     private final static Logger log = LogManager.getLogger();
     work_ip tmp=new work_ip ();
@@ -111,6 +112,8 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         new Thread(TimeShow).start();
+        alert = new Alert(Alert.AlertType.NONE);
+
     }
 
  // public void  SetTimeField ( TextField TimeField){ this.TimeField = TimeField; }
@@ -134,6 +137,7 @@ public class FXMLDocumentController implements Initializable {
              NetField.setText(Arrays.toString(tmp.build_network()));
              MaskField.setText(Arrays.toString(tmp.getMask()));
              BroadcastField.setText(Arrays.toString(tmp.build_broadcast()));
+             SumAddrField.setText(String.valueOf(tmp.getSummaryAddr()));
              if (CheckBox.isSelected()) {
                  if (keys != null) {
                      keys.clear();
@@ -184,14 +188,16 @@ public class FXMLDocumentController implements Initializable {
         try {
             log.info("Попытка сохранить в файл");
             save.export_file(file, tmp.getMap());
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+          //  Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setAlertType(Alert.AlertType.INFORMATION);
             alert.setTitle("Успех");
             alert.setHeaderText(null);
             alert.setContentText(" Файл сохранен ");
             alert.showAndWait();
             log.info("Файл сохранен");
         } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            //Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setAlertType(Alert.AlertType.INFORMATION);
             alert.setTitle("Ошибка");
             alert.setHeaderText(null);
             alert.setContentText(" Ошибка при сохранении файла! ");
@@ -213,9 +219,19 @@ public class FXMLDocumentController implements Initializable {
             WriteObj WriteObj = new WriteObj(tmp, file);
             try {
                 WriteObj.run();
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setTitle("Успех");
+                alert.setHeaderText(null);
+                alert.setContentText(" Объект сохранен ");
+                alert.showAndWait();
                 log.info ("Объект записан в файл");
             }
             catch(IOException ex) {
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setTitle("Ошибка");
+                alert.setHeaderText(null);
+                alert.setContentText(" Ошибка при сохранении объекта! ");
+                alert.showAndWait();
                 log.error("Ошибка при сохранении объекта!", ex);
             }
             catch (Exception ex) {
@@ -243,20 +259,29 @@ public class FXMLDocumentController implements Initializable {
                 }
                 MASK.setText(Integer.toString(tmp.getMaskShort()));
                 SUBNET.setText(tmp_new.toString());
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Успех");
                 alert.setHeaderText(null);
                 alert.setContentText(" Объект восстановлен");
                 alert.showAndWait();
             } catch (FileNotFoundException ex) {
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setTitle("Ошибка");
+                alert.setHeaderText(null);
+                alert.setContentText(" Ошибка при открытии файла!");
+                alert.showAndWait();
                 log.error("Ошибка при открытии файла!", ex);
                 ex.getStackTrace();
             } catch (ClassNotFoundException ex) {
                 log.error("Ошибка при открытии файла: Класс не найден ", ex);
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setTitle("Ошибка");
+                alert.setHeaderText(null);
+                alert.setContentText(" Ошибка при открытии файла: Класс не найден");
+                alert.showAndWait();
                 ex.getStackTrace();
             } catch (IOException e) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Ошибка");
                 alert.setHeaderText(null);
                 alert.setContentText(" Ошибка при попытки восстановления: объект был изменен ");
@@ -267,7 +292,7 @@ public class FXMLDocumentController implements Initializable {
     private int check_mask() {
         String mask=MASK.getText();
          if(mask== null || mask.length() == 0) {
-              Alert alert = new Alert(Alert.AlertType.INFORMATION);
+              alert.setAlertType(Alert.AlertType.INFORMATION);
               alert.setTitle("Ошибка");
               alert.setHeaderText(null);
               alert.setContentText(" Введите маску! ");
@@ -283,7 +308,7 @@ public class FXMLDocumentController implements Initializable {
                   }
                //int mask_int=Integer.parseInt(mask);
               if (mask_int<=0 || mask_int>32 ) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                  alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Ошибка");
                 alert.setHeaderText(null);
                 alert.setContentText(" Маска должна быть в диапозоне от 1 до 32 ");
@@ -305,7 +330,7 @@ public class FXMLDocumentController implements Initializable {
           char b= '.';
          int [] subnet_network=new int[4];
           if( subnet.length() == 0) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+              alert.setAlertType(Alert.AlertType.INFORMATION);
               alert.setTitle("Ошибка");
               alert.setHeaderText(null);
               alert.setContentText(" Введите подсеть! ");
@@ -318,7 +343,7 @@ public class FXMLDocumentController implements Initializable {
                if(subnet.contains(".")) {
                 str = subnet.split("[.]"); 
                 if(str.length<=3) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setAlertType(Alert.AlertType.INFORMATION);
                     alert.setTitle("Ошибка");
                     alert.setHeaderText(null);
                     alert.setContentText("  октеты заполнены неверно!");
@@ -331,7 +356,7 @@ public class FXMLDocumentController implements Initializable {
                            }
                         catch(NumberFormatException ed) {
                          log.error("check_subnet(): Parse_mask_error");
-                               Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setAlertType(Alert.AlertType.INFORMATION);
                                alert.setTitle("Ошибка");
                                alert.setHeaderText(null);
                                alert.setContentText("  Октеты содержат недопустимые значения!");
@@ -341,7 +366,7 @@ public class FXMLDocumentController implements Initializable {
                     }
                     for (int i=0; i<=3;i++) {
                       if (subnet_network[i] < 0 || subnet_network[i] > 255) {
-                       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                          alert.setAlertType(Alert.AlertType.INFORMATION);
                        alert.setTitle("Ошибка");
                        alert.setHeaderText(null);
                        alert.setContentText(" Октет должен быть в диапозоне от 0 до 255 ");
@@ -351,7 +376,7 @@ public class FXMLDocumentController implements Initializable {
                      }
                }
                  else {
-                       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                   alert.setAlertType(Alert.AlertType.INFORMATION);
                        alert.setTitle("Ошибка");
                        alert.setHeaderText(null);
                        alert.setContentText(" Подсеть задана не верно! ");

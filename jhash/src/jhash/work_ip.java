@@ -14,22 +14,45 @@ private int pos;
 private int maskShort;
 static final long serialVersionUID = 10L;
 
+
 public work_ip()
-    {
-     this.ip = new int[4];
-     this.mask = new int[4]; }
+    { this.ip = new int[4];
+     this.mask = new int[4];
+    }
 
- public int [] getMask (){ return this.mask;}
+     public int [] getMask (){
+         return this.mask;
+    }
 
- public int [] getIp (){return this.ip;}
+    public int [] getIp (){
+        return this.ip;
+    }
 
- public void set_ip( int []  subnet_network) { this.ip = subnet_network; }
+    public void set_ip( int []  subnet_network) {
+        this.ip = subnet_network;
+}
 
- public int getMaskShort(){ return this.maskShort; }
+     public int getMaskShort(){
+        return this.maskShort;
+}
 
-public TreeMap<Long, String> getMap (){ return this.treemap; }
+    public TreeMap<Long, String> getMap (){
+        return this.treemap;
+     }
 
-public void set_mask(int mask_int)
+    public int getSummaryAddr() {
+       int sum;
+        System.out.println(getMaskShort());
+       if (getMaskShort() == 32 || getMaskShort() == 31)
+           sum = 1;
+       else {
+           sum = (int) Math.pow(2,32 - getMaskShort() ) - 2;
+       }
+        System.out.println(sum);
+        return sum;
+    }
+
+    public void set_mask(int mask_int)
  {
      maskShort = mask_int;
         switch(mask_int)
@@ -288,8 +311,5 @@ public void print () {
                         beg2 = 0;
                        }
                  }//pos=1
-
-               treemap.put(count,"  " );
-                treemap.put(count,"Summary address: " + count );
                    }// end print()
 }//class
