@@ -2,13 +2,13 @@ package jhash;
 
 import java.io.Serializable;
 import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
+
 
 public final class work_ip  implements Serializable
 {    
 private int [] ip;
 private int [] mask;
-private final  TreeMap<Integer, String> treemap = new TreeMap<>();
+private final  TreeMap<Long, String> treemap = new TreeMap<>();
 private int res; // subnet network
 private int pos;
 private int maskShort;
@@ -23,16 +23,11 @@ public work_ip()
 
  public int [] getIp (){return this.ip;}
 
- public void set_ip( int []  subnet_network)
-    {
-        this.ip = subnet_network; }
+ public void set_ip( int []  subnet_network) { this.ip = subnet_network; }
 
- public int getMaskShort(){
-    return this.maskShort; }
+ public int getMaskShort(){ return this.maskShort; }
 
-public TreeMap<Integer,String > getMap (){
-    return this.treemap;
-}
+public TreeMap<Long, String> getMap (){ return this.treemap; }
 
 public void set_mask(int mask_int)
  {
@@ -40,141 +35,109 @@ public void set_mask(int mask_int)
         switch(mask_int)
         {
             case 0: 
-                     int []mask1 = {255,255,255,0};
-                     this.mask=mask1;                    
+
+                     this.mask = new int[] {0, 0, 0, 0};
                      break;
-            case 1: 
-                     int []mask2 = {128,0,0,0};
-                     this.mask=mask2;
+            case 1:
+                     this.mask = new int [] {128,0,0,0};
                      break;
-            case 2: 
-                     int []mask3 = {192,0,0,0};
-                     this.mask=mask3;
+            case 2:
+                     this.mask = new int[] {192,0,0,0};
                      break; 
-            case 3: 
-                     int []mask4 = {224,0,0,0};
-                     this.mask=mask4;
+            case 3:
+                     this.mask = new int[] {224,0,0,0};
                      break; 
-            case 4: 
-                    int []mask5 = {240,0,0,0};
-                    this.mask=mask5;
+            case 4:
+                    this.mask = new int[] {240,0,0,0};
                     break;  
-            case 5: 
-                    int []mask6 = {248,0,0,0};
-                    this.mask=mask6;
+            case 5:
+                    this.mask = new int[] {248,0,0,0};
+                    break;
+            case 6:
+                    this.mask = new int[] {252,0,0,0};
+                    break;
+            case 7:
+                    this.mask = new int[]  {254,0,0,0};
                     break;  
-            case 6: 
-                    int []mask7 = {252,0,0,0};
-                    this.mask=mask7;
-                    break;  
-            case 7: 
-                    int []mask8 = {254,0,0,0};
-                    this.mask=mask8;
-                    break;  
-            case 8: 
-                    int []mask9 = {255,0,0,0};
-                    this.mask=mask9;
+            case 8:
+                    this.mask = new int[] {255,0,0,0};
                     break;
-            case 9: 
-                    int []mask10 = {255,128,0,0};
-                    this.mask=mask10;
+            case 9:
+                    this.mask = new int[]  {255,128,0,0};
                     break;
-            case 10: 
-                    int []mask11 = {255,192,0,0};
-                    this.mask=mask11;
+            case 10:
+                    this.mask = new int[]  {255,192,0,0};
                     break;
-            case 11: 
-                    int []mask12 = {255,224,0,0};
-                    this.mask=mask12;
+            case 11:
+                    this.mask = new int[] {255,224,0,0};
                     break;
-            case 12: 
-                    int []mask13 = {255,240,0,0};
-                    this.mask=mask13;
+            case 12:
+                    this.mask = new int[] {255,240,0,0};
                     break;        
-            case 13: 
-                    int []mask14 = {255,248,0,0};
-                    this.mask=mask14;
+            case 13:
+                    this.mask = new int[] {255,248,0,0};
                     break;
-            case 14: 
-                    int []mask15 = {255,252,0,0};
-                    this.mask=mask15;
+            case 14:
+                    this.mask = new int[]  {255,252,0,0};
                     break;
-            case 15: 
-                    int []mask16 = {255,254,0,0};
-                    this.mask=mask16;
+            case 15:
+                    this.mask = new int[] {255,254,0,0};
                     break;
-            case 16: 
-                    int []mask17 = {255,255,0,0};
-                    this.mask=mask17;
+            case 16:
+                    this.mask = new int[] {255,255,0,0};
                     break;
-            case 17: 
-                    int []mask18 = {255,255,128,0};
-                    this.mask=mask18;
+            case 17:
+                    this.mask = new int[]{255,255,128,0};
                     break;
-            case 18: 
-                    int []mask19 = {255,255,192,0};
-                    this.mask=mask19;
+            case 18:
+                    this.mask = new int[] {255,255,192,0};
                     break;
-             case 19: 
-                    int []mask20 = {255,255,224,0};
-                    this.mask=mask20;
+             case 19:
+                    this.mask = new int[] {255,255,224,0};
                     break;
-             case 20: 
-                    int []mask21 = {255,255,240,0};
-                    this.mask=mask21;
+             case 20:
+                    this.mask = new int[] {255,255,240,0};
                     break;
-             case 21: 
-                    int []mask22 = {255,255,248,0};
-                    this.mask=mask22;
+             case 21:
+                    this.mask = new int[] {255,255,248,0};
                     break;
-             case 22: 
-                    int []mask23 = {255,255,252,0};
-                    this.mask=mask23;
+             case 22:
+                    this.mask = new int[] {255,255,252,0};
                     break;
-            case 23: 
-                    int []mask24 = {255,255,254,0};
-                    this.mask=mask24;
+            case 23:
+                    this.mask = new int[] {255,255,254,0};
                     break;
-            case 24: 
-                    int []mask25 = {255,255,255,0};
-                    this.mask=mask25;
+            case 24:
+                    this.mask = new int[] {255,255,255,0};
                     break;
-            case 25: 
-                    int []mask26 = {255,255,255,128};
-                    this.mask=mask26;
+            case 25:
+                    this.mask = new int[]  {255,255,255,128};
                     break;
-            case 26: 
-                    int []mask27 = {255,255,255,192};
-                    this.mask=mask27;
+            case 26:
+                    this.mask = new int[] {255,255,255,192};
                     break;
-            case 27: 
-                    int []mask28 = {255,255,255,224};
-                    this.mask=mask28;
+            case 27:
+                    this.mask = new int[] {255,255,255,224};
                     break;
-            case 28: 
-                    int []mask29 = {255,255,255,240};
-                    this.mask=mask29;
+            case 28:
+                    this.mask = new int[] {255,255,255,240};
                     break;
-            case 29: 
-                    int []mask30 = {255,255,255,248};
-                    this.mask=mask30;
+            case 29:
+                    this.mask = new int[] {255,255,255,248};
                     break;
-            case 30: 
-                    int []mask31 = {255,255,255,252};
-                    this.mask=mask31;
+            case 30:
+                    this.mask = new int[] {255,255,255,252};
                     break;
-            case 31: 
-                    int []mask32 = {255,255,255,254};
-                    this.mask=mask32;
+            case 31:
+                    this.mask = new int[] {255,255,255,254};
                     break;
-            case 32: 
-                    int []mask33 = {255,255,255,255};
-                    this.mask=mask33;
+            case 32:
+                    this.mask =  new int [] {255,255,255,255};
                     break;               
         }
     }
 private int found_octet () //found magic octet
-        {  int pos = 0;
+        {  int pos = 3;
             for (int i = 0; i < ip.length; i++)
              {
                 if (this.mask[i] != 255)
@@ -182,7 +145,7 @@ private int found_octet () //found magic octet
                   pos = i;
                   this.pos = pos;
                  break;
-                } 
+                }
              }
                   return pos;
         }
@@ -194,15 +157,15 @@ private int magic_number() {
      }
      
 private void found_network() {
-         int ips=magic_number();
-         int masks=found_octet ();
-         int res=0;
-         for (int i=0;i<=ip[masks];i=i+ips)
+         int ips = magic_number();
+         int masks = found_octet ();
+         int res;
+         for (int i = 0; i <= ip[masks]; i = i + ips)
          {   
-              if (i+ips>ip[masks])
+              if (i + ips > ip[masks])
              {
-                  res=i;
-                  this.res=res;
+                  res = i;
+                  this.res = res;
              }
          }
      }
@@ -224,11 +187,11 @@ public int[] build_network() {
      }
 
 public int[] build_broadcast () {
-    int magic_number;
-    int[] network = new int [4];
+   // int magic_number;
+    int[] network = build_network();
     int [] broadcast = new int [4];
-    network=build_network();
-    for (int i = 0;i < mask.length; i++) {
+
+    for (int i = 0; i < mask.length; i++) {
          switch (mask[i]) {
              case 255:
                  broadcast[i] = ip[i];
@@ -237,7 +200,7 @@ public int[] build_broadcast () {
                  broadcast[i] = 255;
                  break;
              default:
-                 broadcast[i] = (256-mask[i])+(network[pos])-1;
+                 broadcast[i] = (256 - mask[i]) + (network[pos]) - 1;
                  break; //else
          }
          }//for
@@ -247,20 +210,18 @@ public int[] build_broadcast () {
 public void print () {
        if(!treemap.isEmpty()) {
             treemap.clear();
-         };
-            int[] network=new int [4];
-            int [] broadcast =new int [4];  
-            network = build_network();
-            broadcast = build_broadcast();
-            long countIP = 0;
+         }
+            int[] network = build_network();
+            int [] broadcast = build_broadcast();
             String Str;
-            int count_keys_hashtable=0;
+            long count = 0;
+            long count_keys_hashtable = 0;
                 if (pos == 3) {
-                     for (int i=network[pos];i <= broadcast[pos];i++) {
+                     for (long i = network[pos]; i <= broadcast[pos]; i++) {
                           // System.out.println(network[0]+"."+network[1]+"."+network[2]+"."+i);
                            Str = network[0] + "." + network[1] + "." + network[2] + "." + i;
                            treemap.put(i, Str);
-                           countIP++;
+                           count ++;
                        }
                  }//pos=3
                 if (pos == 2) {
@@ -270,8 +231,8 @@ public void print () {
                                  //System.out.println(network[0]+"."+network[1]+"."+beg+"."+j);
                                    Str= network[0] + "." + network[1] + "." + beg + "."+j;
                                    treemap.put(count_keys_hashtable, Str);
-                                 countIP++;
                                  count_keys_hashtable++;
+                                 count ++;
                               }
                                  beg++;
                          }
@@ -289,8 +250,8 @@ public void print () {
                                        //System.out.println(network[0]+"."+beg1+"."+beg2+"."+i);
                                          Str=network[0] + "." + beg1 + "." + beg2 + "." +i;
                                          treemap.put(count_keys_hashtable,Str);
-                                         countIP++;
                                          count_keys_hashtable++;
+                                         count ++;
                                       }
                                 beg2++;
                                }    
@@ -298,24 +259,24 @@ public void print () {
                       beg2 = 0;
                      }
                  }//pos=1
-                if(pos==0)
+                if(pos == 0)
                  {  System.out.println("pos=0");
-                     int beg0=network[pos];
-                    int beg1=0;
-                    int beg2=0;
-                      while(beg0<=broadcast[0])
+                     int beg0 = network[pos];
+                    int beg1 = 0;
+                    int beg2 = 0;
+                      while(beg0 <= broadcast[0])
                        {
-                          while(beg1<=255)
+                          while(beg1 <= 255)
                           {
-                             while(beg2<=255)
+                             while(beg2 <= 255)
                              {
-                                 for(int i=0;i<255;i++)
+                                 for(int i = 0; i < 255; i++)
                                  {
                                      //System.out.println(beg0+"."+beg1+"."+beg2+"."+i);
-                                     Str=beg0+"."+beg1+"."+beg2+"."+i;
+                                     Str = beg0 +"." + beg1 + "." + beg2 +"." +i;
                                      treemap.put(count_keys_hashtable, Str);
                                      count_keys_hashtable++;
-                                     countIP++;
+                                     count ++;
                                  }
                                beg2++;  
                              }
@@ -327,5 +288,8 @@ public void print () {
                         beg2 = 0;
                        }
                  }//pos=1
+
+               treemap.put(count,"  " );
+                treemap.put(count,"Summary address: " + count );
                    }// end print()
 }//class

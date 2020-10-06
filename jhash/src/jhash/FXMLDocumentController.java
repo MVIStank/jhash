@@ -6,6 +6,12 @@ TODO:
 rewrite by task some hardly operation ( by future task)
 add show time +
 add socket
+разделить функицю вывода маски на расчет и на печать
+переделать фукнцию сохранения ( только печатать , не расчитывать)
+логировние
+переделать вывод ошибок ( один обект)
+блокировка кнопок при расчете ( save & restore)
+Исключения
 */
 package jhash;
 
@@ -24,6 +30,7 @@ import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -56,7 +63,7 @@ public class FXMLDocumentController implements Initializable {
      @FXML 
     private ProgressBar progressbar;
      @FXML
-    private ListView listView;
+    private ListView<String> listView;
     @FXML
     private  Hyperlink Stop_Handler;
 
@@ -65,7 +72,7 @@ public class FXMLDocumentController implements Initializable {
     private final static Logger log = LogManager.getLogger();
     work_ip tmp=new work_ip ();
     ObservableList <String> list =FXCollections.observableArrayList();
-    Set<Integer> keys;
+    Set<Long> keys;
 
     Task TimeShow = new Task() {
         @Override
@@ -77,7 +84,7 @@ public class FXMLDocumentController implements Initializable {
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                 }
-                Thread.sleep(200);
+                Thread.sleep(400);
             }
            return null;
         }
@@ -92,7 +99,7 @@ public class FXMLDocumentController implements Initializable {
                 Thread.sleep(7000);
                 tmp.print();
                 keys = tmp.getMap().keySet();
-                for(Integer key: keys) {
+                for(Long key: keys) {
                     Platform.runLater(() -> list.addAll(tmp.getMap().get(key)));
 
                     Platform.runLater(() -> listView.setItems(list));
@@ -106,7 +113,7 @@ public class FXMLDocumentController implements Initializable {
         new Thread(TimeShow).start();
     }
 
-  public void  SetTimeField ( TextField TimeField){ this.TimeField = TimeField; }
+ // public void  SetTimeField ( TextField TimeField){ this.TimeField = TimeField; }
 
     @FXML
    private void  HandlerMouseCancelclick(ActionEvent event){
@@ -197,7 +204,7 @@ public class FXMLDocumentController implements Initializable {
    }
     @FXML
     private void handleButtonActionWriteObj (ActionEvent event)  {
-       FileSave save =new FileSave();
+       //FileSave save =new FileSave();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Сохранить");
         fileChooser.setInitialFileName("result.txt");
@@ -223,19 +230,25 @@ public class FXMLDocumentController implements Initializable {
         fileChooser.setInitialFileName("result.txt");
         File file = fileChooser.showOpenDialog(null);
         RestoreObj RestObj = new RestoreObj(file);
-        String tmp_new = "";
+        StringBuilder tmp_new = new StringBuilder();
         if(file != null) {
             try {
                 tmp = RestObj.run();
                 for (int i = 0; i < tmp.getIp().length; i++) {
                     if (i == tmp.getIp().length - 1) {
-                        tmp_new += tmp.getIp()[i];
+                        tmp_new.append(tmp.getIp()[i]);
                         break;
                     }
-                    tmp_new += tmp.getIp()[i] + ".";
+                    tmp_new.append(tmp.getIp()[i]).append(".");
                 }
                 MASK.setText(Integer.toString(tmp.getMaskShort()));
-                SUBNET.setText(tmp_new);
+                SUBNET.setText(tmp_new.toString());
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Успех");
+                alert.setHeaderText(null);
+                alert.setContentText(" Объект восстановлен");
+                alert.showAndWait();
             } catch (FileNotFoundException ex) {
                 log.error("Ошибка при открытии файла!", ex);
                 ex.getStackTrace();
