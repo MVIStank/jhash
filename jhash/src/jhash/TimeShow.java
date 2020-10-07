@@ -10,11 +10,15 @@ public class TimeShow  {
 private SimpleDateFormat format;
 private Date date;
 
- synchronized String time () throws Throwable {
-    date = new Date();
+public TimeShow(){
     format = new SimpleDateFormat("HH:mm:ss");
-    sleep(800);
-    return format.format(date);
+}
+
+ synchronized String time () throws Throwable {
+    //date = new Date();
+    //format = new SimpleDateFormat("HH:mm:ss");
+    sleep(700);
+    return format.format(new Date());
  }
 
  }

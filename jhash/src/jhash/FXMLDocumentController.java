@@ -9,8 +9,8 @@ add socket
 переделать фукнцию сохранения ( только печатать , не расчитывать)
 логировние
 переделать вывод ошибок ( один обект) +
-блокировка кнопок при расчете ( save & restore)
-Исключения
+блокировка кнопок при расчете ( save & restore) +
+Исключение
 */
 package jhash;
 
@@ -29,7 +29,6 @@ import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -74,23 +73,23 @@ public class FXMLDocumentController implements Initializable {
 
     Task copyWorker;
     Alert alert;
-
-    private final static Logger log = LogManager.getLogger();
-    work_ip tmp=new work_ip ();
-    ObservableList <String> list =FXCollections.observableArrayList();
+    private   static Logger log;
+    work_ip tmp;
+    ObservableList <String> list;
     Set<Long> keys;
 
     Task TimeShow = new Task() {
         @Override
-        protected Object call() throws Exception {
+        protected Object call() {
             TimeShow Tm = new TimeShow();
             while(Jhash.close_app) {
                 try {
+                    Thread.sleep(100);
                   TimeField.setText(Tm.time());
+                    Thread.sleep(200);
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                 }
-                Thread.sleep(400);
             }
            return null;
         }
@@ -118,10 +117,10 @@ public class FXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         new Thread(TimeShow).start();
         alert = new Alert(Alert.AlertType.NONE);
-
+        log = LogManager.getLogger();
+        tmp = new work_ip();
+        list =  FXCollections.observableArrayList();
     }
-
- // public void  SetTimeField ( TextField TimeField){ this.TimeField = TimeField; }
 
     @FXML
    private void  HandlerMouseCancelclick(ActionEvent event){
@@ -138,6 +137,7 @@ public class FXMLDocumentController implements Initializable {
             copyWorker.cancel(true);
          }
     }
+
     @FXML
    private void handleButtonAction(ActionEvent event) {
          if (check_mask() == 0 && check_subnet() == 0) {
@@ -219,6 +219,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
    }
+
     @FXML
     private void handleButtonActionWriteObj (ActionEvent event)  {
        //FileSave save =new FileSave();
@@ -226,7 +227,7 @@ public class FXMLDocumentController implements Initializable {
         fileChooser.setTitle("Сохранить");
         fileChooser.setInitialFileName("result.txt");
         File file = fileChooser.showSaveDialog(null);
-        if (file !=null) {
+        if (file != null) {
             WriteObj WriteObj = new WriteObj(tmp, file);
             try {
                 WriteObj.run();
@@ -250,6 +251,7 @@ public class FXMLDocumentController implements Initializable {
             }
         }
     }
+
     @FXML
     private void handleButtonActionRestoreObj (ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -302,23 +304,23 @@ public class FXMLDocumentController implements Initializable {
     }
     private int check_mask() {
         String mask=MASK.getText();
-         if(mask== null || mask.length() == 0) {
+         if(mask == null || mask.length() == 0) {
               alert.setAlertType(Alert.AlertType.INFORMATION);
               alert.setTitle("Ошибка");
               alert.setHeaderText(null);
               alert.setContentText(" Введите маску! ");
               alert.showAndWait();
           }
-         else { int mask_int=0;
+         else { int mask_int = 0;
                try{
-                  mask_int=Integer.parseInt(mask);
+                  mask_int = Integer.parseInt(mask);
                   }
                catch(NumberFormatException e)
                   {
                 log.error("check_mask(): Parse_mask_error");
                   }
                //int mask_int=Integer.parseInt(mask);
-              if (mask_int<=0 || mask_int>32 ) {
+              if (mask_int <= 0 || mask_int > 32 ) {
                   alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Ошибка");
                 alert.setHeaderText(null);
@@ -335,10 +337,10 @@ public class FXMLDocumentController implements Initializable {
     }// end function
     
  private int check_subnet(){
-         String subnet=SUBNET.getText();
+         String subnet = SUBNET.getText();
          String [] str;
           char a =',';
-          char b= '.';
+          char b = '.';
          int [] subnet_network=new int[4];
           if( subnet.length() == 0) {
               alert.setAlertType(Alert.AlertType.INFORMATION);
@@ -349,7 +351,7 @@ public class FXMLDocumentController implements Initializable {
               return -1;
            }
            else {
-               subnet=subnet.replace(a, b);
+               subnet = subnet.replace(a, b);
                SUBNET.setText(subnet);
                if(subnet.contains(".")) {
                 str = subnet.split("[.]"); 
@@ -361,9 +363,9 @@ public class FXMLDocumentController implements Initializable {
                     alert.showAndWait();
                     return -1;
                 }
-                    for(int i=0; i<=3;i++) {
+                    for(int i = 0; i <= 3;i++) {
                         try{
-                        subnet_network[i]=Integer.parseInt(str[i]);
+                        subnet_network[i] = Integer.parseInt(str[i]);
                            }
                         catch(NumberFormatException ed) {
                          log.error("check_subnet(): Parse_mask_error");
@@ -375,7 +377,7 @@ public class FXMLDocumentController implements Initializable {
                                return -1;
                            }
                     }
-                    for (int i=0; i<=3;i++) {
+                    for (int i = 0; i <= 3; i++) {
                       if (subnet_network[i] < 0 || subnet_network[i] > 255) {
                           alert.setAlertType(Alert.AlertType.INFORMATION);
                        alert.setTitle("Ошибка");
