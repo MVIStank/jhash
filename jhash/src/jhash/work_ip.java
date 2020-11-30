@@ -224,10 +224,10 @@ public int[] build_broadcast () {
                  broadcast[i] = (256 - mask[i]) + (network[pos]) - 1;
                  break; //else
          }
-         }//for
+    }//for
      return broadcast;
-     }
- 
+}
+
 public void print () {
        if(!treemap.isEmpty()) {
             treemap.clear();

@@ -11,7 +11,7 @@ import java.util.TreeMap;
 public class FileSave {
     
     
-     public int export_file (File file, TreeMap<Long, String> treemap) throws  IOException{
+     public void export_file (File file, TreeMap<Long, String> treemap) throws  IOException{
          
          FileWriter fileReader = new FileWriter(file);
          BufferedWriter bufferedWriter = new BufferedWriter(fileReader);     
@@ -21,6 +21,5 @@ public class FileSave {
                  bufferedWriter.write(treemap.get(key) + "\n");
               }
              bufferedWriter.close();
-         return -1;
      }
 }
