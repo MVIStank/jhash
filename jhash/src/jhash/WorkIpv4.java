@@ -4,23 +4,23 @@ import java.io.Serializable;
 import java.util.TreeMap;
 
 
-public final class work_ip  implements Serializable
+public final class WorkIpv4  implements Serializable
 {    
-private int [] ip;
-private int [] mask;
-private final  TreeMap<Long, String> treemap = new TreeMap<>();
-private int res; // subnet network
-private int pos;
-private int maskShort;
-static final long serialVersionUID = 10L;
+    private int [] ip;
+    private int [] mask;
+    private final  TreeMap<Long, String> treemap = new TreeMap<>();
+    private int res; // subnet network
+    private int pos;
+    private int maskShort;
+    static final long serialVersionUID = 10L;
 
 
-public work_ip()
-    { this.ip = new int[4];
+    public WorkIpv4() {
+     this.ip = new int[4];
      this.mask = new int[4];
     }
 
-     public int [] getMask (){
+    public int [] getMask (){
          return this.mask;
     }
 
@@ -32,7 +32,7 @@ public work_ip()
         this.ip = subnet_network;
 }
 
-     public int getMaskShort(){
+    public int getMaskShort(){
         return this.maskShort;
 }
 
@@ -50,13 +50,10 @@ public work_ip()
         return sum;
     }
 
-    public void set_mask(int mask_int)
- {
+    public void set_mask(int mask_int) {
      maskShort = mask_int;
-        switch(mask_int)
-        {
-            case 0: 
-
+        switch(mask_int) {
+            case 0:
                      this.mask = new int[] {0, 0, 0, 0};
                      break;
             case 1:

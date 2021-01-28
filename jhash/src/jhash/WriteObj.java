@@ -7,9 +7,9 @@ public class WriteObj {
     private FileOutputStream filestream;
     private ObjectOutputStream os;
     private File file;
-    work_ip link;
+    WorkIpv4 link;
 
-    WriteObj(work_ip link, File file)
+    WriteObj(WorkIpv4 link, File file)
     {
         this.link = link;
         this.file = file;

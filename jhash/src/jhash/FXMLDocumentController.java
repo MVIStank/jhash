@@ -74,7 +74,7 @@ public class FXMLDocumentController implements Initializable {
     Task copyWorker;
     Alert alert;
     private   static Logger log;
-    work_ip tmp;
+    WorkIpv4 tmp;
     ObservableList <String> list;
     Set<Long> keys;
 
@@ -118,8 +118,8 @@ public class FXMLDocumentController implements Initializable {
         new Thread(TimeShow).start();
         alert = new Alert(Alert.AlertType.NONE);
         log = LogManager.getLogger();
-        tmp = new work_ip();
-        list =  FXCollections.observableArrayList();
+        tmp = new WorkIpv4();
+        list = FXCollections.observableArrayList();
     }
 
     @FXML

@@ -10,10 +10,10 @@ public class RestoreObj {
     RestoreObj (File FR){
         this.FR= FR;
     }
-    public work_ip run () throws IOException, ClassNotFoundException {
+    public WorkIpv4 run () throws IOException, ClassNotFoundException {
         FileInputStream filestream = new FileInputStream(FR);
         ObjectInputStream os = new ObjectInputStream(filestream);
         Object one = os.readObject();
-        return (work_ip) one;
+        return (WorkIpv4) one;
     }
 }
