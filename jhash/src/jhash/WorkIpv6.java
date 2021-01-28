@@ -65,7 +65,7 @@ public class WorkIpv6 {
                 return lastAddrIpv6;
         }
         //
-        ArrayList<Integer> buildSubnetIpv6 () {
+       private ArrayList<Integer> buildSubnetIpv6 () {
                 ArrayList<Integer> tmp;
                 tmp = buildBinaryIpv6();
                 for (int i = 0; i < tmp.size(); i++) {
@@ -83,7 +83,7 @@ public class WorkIpv6 {
         Input:
         Output: Integer array with  ipv6 representative of dex  [5200,0,200]
          */
-        ArrayList<Integer> buildFirstAdrIpv6 () {
+      private  ArrayList<Integer> buildFirstAdrIpv6 () {
                 ArrayList<String> sr = arrayToStringBuilderPrepare(ipv6Bin);
                 // sr = [f,e,8,0]
                 ArrayList<Integer> tmp1 = new ArrayList<>();
@@ -112,7 +112,6 @@ public class WorkIpv6 {
                                 tie = false;
                         }
                 }
-                System.out.println(tmp1);
                 for (int i = tmp1.size(); i >= 0; i--) {
                         int h = tmp1.get((i) - 1);
                         if (h + 1 > 65536) {
@@ -122,7 +121,6 @@ public class WorkIpv6 {
                                 break;
                         }
                 }
-                System.out.println(tmp1);
                 return tmp1;
         }
         ////
