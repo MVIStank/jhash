@@ -30,7 +30,7 @@ public class WorkIpv6 {
         private int prefix; //received prefix   from Controller
         private String subnet; // calculated network
 
-        WorkIpv6(ArrayList<String> ipv6Pre, int prefix) {
+         WorkIpv6(ArrayList<String> ipv6Pre, int prefix) {
                 this.ipv6Pre = ipv6Pre;
                 this.prefix = prefix;
                 start();
@@ -49,20 +49,19 @@ public class WorkIpv6 {
         // return first address of ipv6 subnet
         public String getFirstAddrIpv6() {
                 ArrayList<Integer> tmp = new ArrayList<>();
-                String str="";
+                StringBuilder str= new StringBuilder();
                 tmp = buildFirstAdrIpv6();
-                for (int i = 0; i < tmp.size(); i++) {
-                        str += Integer.toHexString(tmp.get(i));
-                        str +=":";
+                for (Integer integer : tmp) {
+                        str.append(Integer.toHexString(integer));
+                        str.append(":");
                 }
-                return str;
+                return str.toString();
         }
         //
         public String getLastAddrIpv6() {
-                ArrayList<Integer> tmp = new ArrayList<>();
+                ArrayList<Integer> tmp;
                 tmp = buildLastAddrIpv6();
-                String lastAddrIpv6 = viewOfIv6(arrayToStringBuilderPrepare(tmp));
-                return lastAddrIpv6;
+                return viewOfIv6(arrayToStringBuilderPrepare(tmp));
         }
         //
        private ArrayList<Integer> buildSubnetIpv6 () {
@@ -87,9 +86,8 @@ public class WorkIpv6 {
                 ArrayList<String> sr = arrayToStringBuilderPrepare(ipv6Bin);
                 // sr = [f,e,8,0]
                 ArrayList<Integer> tmp1 = new ArrayList<>();
-                String str = "";
+                StringBuilder str = new StringBuilder();
                 ArrayList<String> buffer = new ArrayList<>();
-                ArrayList<String> fin = new ArrayList<>();
                 int count = 0;
                 int k = 0;
                 boolean tie = true;
@@ -98,16 +96,16 @@ public class WorkIpv6 {
                                 if (count == 4) {
                                         break;
                                 } else {
-                                        str += sr.get(k);
+                                        str.append(sr.get(k));
                                         buffer.add(sr.get(k));
                                         count++;
                                         k++;
                                 }
                         }
-                        int m = Integer.parseInt(str, 16);
+                        int m = Integer.parseInt(str.toString(), 16);
                         tmp1.add(m);
                         count = 0;
-                        str = "";
+                        str = new StringBuilder();
                         if ( k == sr.size()) {
                                 tie = false;
                         }
@@ -142,18 +140,18 @@ public class WorkIpv6 {
          */
         private ArrayList<String> arrayToStringBuilderPrepare(ArrayList <Integer> arr){
                 ArrayList <String>  ipv6Prepare = new ArrayList<>();
-                String   str = "";
+                StringBuilder str = new StringBuilder();
                 int count = 0;
                 for ( int i = 0; i < arr.size()-3; i ++) {
                         while (count < 4) {
-                                str += arr.get(i);
+                                str.append(arr.get(i));
                                 count ++;
                                 i++;
                         }
-                        int dec = Integer.parseInt(str, 2);
+                        int dec = Integer.parseInt(str.toString(), 2);
                         String hexString = Integer.toHexString(dec);
                         ipv6Prepare.add(hexString);
-                        str = "";
+                        str = new StringBuilder();
                         count = 0;
                         i--;
                 }
@@ -168,7 +166,6 @@ public class WorkIpv6 {
                 ArrayList<String> buffer = new ArrayList<>();
                 ArrayList<String> fin = new ArrayList<>();
                 int count = 0;
-                int i = 0;
                 int k = 0;
                 boolean tie = true;
                 while (tie) {
@@ -202,8 +199,8 @@ public class WorkIpv6 {
                         }
                 }
                 fin.remove(fin.size() - 1);
-                for (int j = 0; j < fin.size(); j++) {
-                        ipv6Representive.append(fin.get(j));
+                for (String s : fin) {
+                        ipv6Representive.append(s);
                 }
                 return ipv6Representive.toString();
         }
@@ -235,8 +232,8 @@ public class WorkIpv6 {
                 ArrayList <Integer> tmp;
 
                 ArrayList <Integer> tmp2 = new ArrayList ();
-                for (int i = 0; i < ipv6Pre.size() ; i++) {
-                        tmp = hexToBinaryOctet(ipv6Pre.get(i));
+                for (String s : ipv6Pre) {
+                        tmp = hexToBinaryOctet(s);
                         tmp2.addAll(tmp);
                 }
                 return tmp2;
