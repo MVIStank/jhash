@@ -88,7 +88,7 @@ public class FXMLDocumentController implements Initializable {
                   TimeField.setText(Tm.time());
                     Thread.sleep(200);
                 } catch (Throwable throwable) {
-                    throwable.printStackTrace();
+                    // throwable.printStackTrace();
                 }
             }
            return null;
